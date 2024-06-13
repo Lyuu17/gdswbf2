@@ -17,13 +17,12 @@
 #include "Vector2.hpp"
 #include "Vector3.hpp"
 #include "RGBA.hpp"
+#include "FNVHash.hpp"
+#include "Utils.hpp"
 
 namespace SWBF2
 {
     typedef uint32_t ChunkSize;
-
-    typedef uint32_t CRCChecksum;
-    typedef uint32_t FNVHash;
 
     typedef uint16_t SWBF2Handle;
 

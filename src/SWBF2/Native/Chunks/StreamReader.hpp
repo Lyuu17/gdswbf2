@@ -91,7 +91,7 @@ namespace SWBF2::Native
         StreamReader &operator>>(std::string &value)
         {
             const char *str = reinterpret_cast<const char *>(&m_data[m_head]);
-            std::size_t len = GetHeader().size;
+            std::size_t len = std::distance(str, std::find(str, str + GetHeader().size, '\0'));
 
             value = std::string_view(str, len);
 

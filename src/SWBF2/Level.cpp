@@ -1,6 +1,8 @@
 
 #include <godot_cpp/classes/array_mesh.hpp>
 #include <godot_cpp/classes/mesh_instance3d.hpp>
+#include <godot_cpp/classes/image_texture.hpp>
+#include <godot_cpp/classes/standard_material3d.hpp>
 #include <godot_cpp/variant/color.hpp>
 
 #include "Native/Chunks/ChunkProcessor.hpp"
@@ -14,7 +16,26 @@ namespace SWBF2
     {
         SWBF2::Native::UcfbChunk::ReadUcfbFile("data/_lvl_pc/cor/cor1.lvl");
 
+        LoadTextures();
         LoadMeshes();
+    }
+
+    void Level::LoadTextures()
+    {
+        for (auto const &[id, tex] : Native::Level::m_tex)
+        {
+            for (auto const format : tex->m_formats)
+            {
+                for (auto const faceLevel : format.m_faceLevels)
+                {
+                    godot::Ref<godot::StandardMaterial3D> material;
+                    material.instantiate();
+                    material->set_texture(godot::StandardMaterial3D::TEXTURE_ALBEDO, faceLevel.m_gdImageTexture);
+
+                    m_textureMaterials.insert_or_assign(id, material);
+                }
+            }
+        }
     }
 
     void Level::LoadMeshes()
@@ -77,6 +98,27 @@ namespace SWBF2
 
                 godot::ArrayMesh *arrMesh = memnew(godot::ArrayMesh);
                 arrMesh->add_surface_from_arrays(godot::Mesh::PRIMITIVE_TRIANGLE_STRIP, arrays);
+
+                auto tex_id = 0;
+                for (const auto &texName : segment.m_textureNames)
+                {
+                    if (!m_textureMaterials.contains(texName))
+                    {
+                        godot::UtilityFunctions::printerr(__FILE__, ":", __LINE__, ": No texture found for ", texName.c_str());
+                        continue;
+                    }
+
+                    godot::UtilityFunctions::print(__FILE__, ":", __LINE__, ": Found texture of ", texName.c_str());
+
+                    meshInstance->set_material_override(m_textureMaterials[texName]);
+
+                    tex_id++;
+                }
+
+                if (meshInstance->get_material_override().is_null())
+                {
+                    godot::UtilityFunctions::printerr(__FILE__, ":", __LINE__, ": Mesh ", id.c_str(), " has no texture at all");
+                }
 
                 meshInstance->set_mesh(arrMesh);
             }

@@ -26,16 +26,12 @@ project(swbf2
     VERSION
         0.1.0
 )
+set(CMAKE_CXX_STANDARD 23)
 
 set(CMAKE_VS_INCLUDE_INSTALL_TO_DEFAULT_BUILD 1)
 
 # Create our library
 add_library( ${PROJECT_NAME} SHARED )
-
-target_compile_features( ${PROJECT_NAME}
-    PRIVATE
-        cxx_std_23
-)
 
 # LIB_ARCH is the architecture being built. It is set to the build system's architecture.
 # For macOS, we build a universal library (both arm64 and x86_64).

@@ -9,6 +9,7 @@
 #include "UcfbChunk.hpp"
 #include "WorldChunk.hpp"
 #include "LoclChunk.hpp"
+#include "TextureChunk.hpp"
 
 namespace SWBF2::Native
 {
@@ -21,7 +22,8 @@ namespace SWBF2::Native
             { "ucfb"_m, UcfbChunk::ProcessChunk },
             { "wrld"_m, WorldChunk::ProcessChunk },
             { "modl"_m, ModelChunk::ProcessChunk },
-            { "Locl"_m, LoclChunk::ProcessChunk }
+            { "Locl"_m, LoclChunk::ProcessChunk },
+            { "tex_"_m, TextureChunk::ProcessChunk }
         };
 
         static void ProcessChunk(StreamReader &streamReader, StreamReader &parentReader);
