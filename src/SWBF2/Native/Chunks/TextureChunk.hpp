@@ -9,7 +9,7 @@ namespace SWBF2::Native
     class TextureChunk {
     public:
         static void ProcessChunk(StreamReader &streamReader);
-        static void ProcessFMTChunk(StreamReader &streamReader, Texture *tex);
+        static void ProcessFMTChunk(StreamReader &streamReader, Texture &tex);
         static void ProcessTextureLevelChunk(StreamReader &streamReader, TextureFormat &fmt);
     };
 

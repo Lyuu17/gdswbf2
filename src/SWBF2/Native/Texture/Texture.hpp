@@ -1,7 +1,7 @@
 
 #pragma once
 
-#include <godot_cpp/classes/image_texture.hpp>
+#include <godot_cpp/classes/texture.hpp>
 
 #include "Native/D3D9/d3dformat.hpp"
 
@@ -13,7 +13,7 @@ namespace SWBF2::Native
         uint32_t m_bodySize;
         std::vector<std::byte> m_imageInBytes;
 
-        godot::Ref<godot::ImageTexture> m_gdImageTexture;
+        godot::Ref<godot::Texture> m_gdTexture;
     } TextureFormatFaceLevel;
 
     typedef struct _TEX_FMT

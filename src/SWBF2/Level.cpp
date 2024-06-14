@@ -14,42 +14,22 @@ namespace SWBF2
 {
     void Level::_ready()
     {
+        set_name("Level");
+
         SWBF2::Native::UcfbChunk::ReadUcfbFile("data/_lvl_pc/cor/cor1.lvl");
 
-        LoadTextures();
         LoadMeshes();
-    }
-
-    void Level::LoadTextures()
-    {
-        for (auto const &[id, tex] : Native::Level::m_tex)
-        {
-            for (auto const format : tex->m_formats)
-            {
-                for (auto const faceLevel : format.m_faceLevels)
-                {
-                    godot::Ref<godot::StandardMaterial3D> material;
-                    material.instantiate();
-                    material->set_texture(godot::StandardMaterial3D::TEXTURE_ALBEDO, faceLevel.m_gdImageTexture);
-                    material->set_flag(godot::BaseMaterial3D::FLAG_ALBEDO_FROM_VERTEX_COLOR, true);
-                    material->set_cull_mode(godot::BaseMaterial3D::CULL_DISABLED);
-
-                    m_textureMaterials.insert_or_assign(id, material);
-                }
-            }
-        }
     }
 
     void Level::LoadMeshes()
     {
         for (auto const &[id, model] : Native::Level::m_models)
         {
+            uint32_t segment_id = 0;
             for (auto const &segment : model.m_segments)
             {
                 godot::MeshInstance3D *meshInstance = memnew(godot::MeshInstance3D);
-                meshInstance->set_name(std::format("_lvl_mesh_{}", id).c_str());
-
-                add_child(meshInstance);
+                meshInstance->set_name(std::format("{}_segm_{}", id, segment_id).c_str());
 
                 godot::PackedVector3Array vertices;
                 godot::PackedVector3Array normals;
@@ -100,18 +80,28 @@ namespace SWBF2
                 godot::ArrayMesh *arrMesh = memnew(godot::ArrayMesh);
                 arrMesh->add_surface_from_arrays(godot::Mesh::PRIMITIVE_TRIANGLE_STRIP, arrays);
 
+                meshInstance->set_mesh(arrMesh);
+
                 auto tex_id = 0;
                 for (const auto &texName : segment.m_textureNames)
                 {
-                    if (!m_textureMaterials.contains(texName))
+                    // TODO, apply bump to texture
+                    if (texName.ends_with("bump"))
+                        continue;
+
+                    auto &material = m_materialPool.getItem(texName);
+                    if (material.is_null())
                     {
-                        godot::UtilityFunctions::printerr(__FILE__, ":", __LINE__, ": No texture found for ", texName.c_str());
+                        godot::UtilityFunctions::printerr(__FILE__, ":", __LINE__, ": No material found for ", texName.c_str());
                         continue;
                     }
 
-                    godot::UtilityFunctions::print(__FILE__, ":", __LINE__, ": Found texture of ", texName.c_str());
+                    godot::UtilityFunctions::print(__FILE__, ":", __LINE__, ": Found texture ", texName.c_str(), " for mesh ", id.c_str(), " with segment id ", segment_id);
 
-                    meshInstance->set_material_override(m_textureMaterials[texName]);
+                    // if (segment.m_material.m_flags & Native::MaterialFlags::Transparent)
+                    //    material->set_transparency(godot::BaseMaterial3D::TRANSPARENCY_ALPHA_SCISSOR);
+
+                    meshInstance->set_surface_override_material(0, material);
 
                     tex_id++;
                 }
@@ -121,7 +111,11 @@ namespace SWBF2
                     godot::UtilityFunctions::printerr(__FILE__, ":", __LINE__, ": Mesh ", id.c_str(), " has no texture at all");
                 }
 
-                meshInstance->set_mesh(arrMesh);
+                add_child(meshInstance);
+                meshInstance->set_owner(this->get_parent());
+                meshInstance->add_to_group("Level Meshes");
+
+                segment_id++;
             }
         }
     }

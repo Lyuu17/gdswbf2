@@ -19,12 +19,16 @@ namespace SWBF2
 
     void Core::_ready()
     {
+        set_name("Core");
+
         godot::UtilityFunctions::print("hello world!");
 
         // SWBF2::Native::UcfbChunk::ReadUcfbFile("data/_lvl_pc/common.lvl");
         // SWBF2::Native::UcfbChunk::ReadUcfbFile("data/_lvl_pc/core.lvl");
 
-        add_child(memnew(Level));
+        Level *lvl = memnew(Level);
+        add_child(lvl);
+        lvl->set_owner(this);
     }
 
     void Core::_bind_methods()
