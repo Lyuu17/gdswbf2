@@ -31,6 +31,8 @@ namespace SWBF2
                     godot::Ref<godot::StandardMaterial3D> material;
                     material.instantiate();
                     material->set_texture(godot::StandardMaterial3D::TEXTURE_ALBEDO, faceLevel.m_gdImageTexture);
+                    material->set_flag(godot::BaseMaterial3D::FLAG_ALBEDO_FROM_VERTEX_COLOR, true);
+                    material->set_cull_mode(godot::BaseMaterial3D::CULL_DISABLED);
 
                     m_textureMaterials.insert_or_assign(id, material);
                 }
@@ -73,7 +75,7 @@ namespace SWBF2
 
                 for (const auto &color : segment.m_verticesBuf.m_colors)
                 {
-                    colors.push_back({ (float)color.color.r / 255.0f, (float)color.color.g, (float)color.color.b / 255.0f, (float)color.color.a / 255.0f });
+                    colors.push_back({ (float)color.color.r / 255.0f, (float)color.color.g / 255.0f, (float)color.color.b / 255.0f, (float)color.color.a / 255.0f });
                 }
 
                 for (const auto &texCoord : segment.m_verticesBuf.m_texCoords)
@@ -81,10 +83,9 @@ namespace SWBF2
                     uvs.push_back({ texCoord.x, texCoord.y });
                 }
 
-                // reverse the faces
-                for (std::size_t i = segment.m_indicesBuf.m_indices.size(); i > 0; i--)
+                for (std::size_t i = 0; i < segment.m_indicesBuf.m_indices.size(); i++)
                 {
-                    indices.push_back({ segment.m_indicesBuf.m_indices[i - 1] });
+                    indices.push_back({ segment.m_indicesBuf.m_indices[i] });
                 }
 
                 godot::Array arrays;
