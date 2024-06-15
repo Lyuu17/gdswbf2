@@ -83,6 +83,10 @@ namespace SWBF2
                             material->set_texture(godot::BaseMaterial3D::TEXTURE_NORMAL, bumpTexture);
                         }
 
+                        // TODO: fix leaves transparency?
+                        if (mainTextureName == "leaves")
+                            material->set_transparency(godot::BaseMaterial3D::TRANSPARENCY_ALPHA_SCISSOR);
+
                         if (segment.m_material.m_flags & Native::Material::MATERIAL_TRANSPARENT)
                             material->set_transparency(godot::BaseMaterial3D::TRANSPARENCY_ALPHA);
 
