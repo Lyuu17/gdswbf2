@@ -27,14 +27,4 @@ namespace SWBF2
     typedef uint16_t SWBF2Handle;
 
     constexpr auto SWBF2HANDLE_INVALID = 0xffff;
-
-    enum class Topology : uint32_t {
-        Unknown,
-        PointList,
-        LineList,
-        LineStrip,
-        TriangleList,
-        TriangleStrip,
-        TriangleFan,
-    };
 }

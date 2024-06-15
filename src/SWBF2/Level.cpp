@@ -6,6 +6,7 @@
 #include <godot_cpp/variant/color.hpp>
 
 #include "Native/Chunks/ChunkProcessor.hpp"
+#include "Native/Models/ModelUtils.hpp"
 #include "Native/Level.hpp"
 
 #include "Level.hpp"
@@ -61,14 +62,13 @@ namespace SWBF2
                 arrays[godot::ArrayMesh::ARRAY_INDEX] = indices;
 
                 godot::ArrayMesh *arrMesh = memnew(godot::ArrayMesh);
-                arrMesh->add_surface_from_arrays(godot::Mesh::PRIMITIVE_TRIANGLE_STRIP, arrays);
+
+                arrMesh->add_surface_from_arrays(Native::ModelUtils::DXtoGLPrimitiveType(segment.m_primitiveType), arrays);
 
                 meshInstance->set_mesh(arrMesh);
 
                 if (!segment.m_textureNames.empty())
                 {
-                    static godot::Ref<godot::StandardMaterial3D> emptyGodotRef;
-
                     const auto &mainTextureName = segment.m_textureNames[Native::ModelSegment::TEXTURE_DEFAULT];
                     const auto &bumpTextureName = segment.m_textureNames[Native::ModelSegment::TEXTURE_NORMAL];
 

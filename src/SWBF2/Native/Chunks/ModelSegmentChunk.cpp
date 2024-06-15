@@ -14,7 +14,9 @@ namespace SWBF2::Native
 
         auto infoReaderChild = streamReader.ReadChildWithHeader<"INFO"_m>();
         {
-            *infoReaderChild >> segment.m_info;
+            *infoReaderChild >> segment.m_primitiveType;
+            *infoReaderChild >> segment.m_vertexCount;
+            *infoReaderChild >> segment.m_primitiveCount;
         }
 
         std::optional<StreamReader> readerChild;

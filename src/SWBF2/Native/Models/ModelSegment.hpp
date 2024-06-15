@@ -28,12 +28,15 @@ namespace SWBF2::Native
         TexCoordCompressed = 0b1000000000000000u
     };
 
-    typedef struct _MODEL_SEGMENT_INFO
-    {
-        Topology m_topology;
-        uint32_t m_vertexCount;
-        uint32_t m_primitiveCount;
-    } ModelSegmentInfo;
+    enum class PrimitiveType : uint32_t {
+        UNKNOWN,
+        POINTLIST,
+        LINELIST,
+        LINESTRIP,
+        TRIANGLELIST,
+        TRIANGLESTRIP,
+        TRIANGLEFAN
+    };
 
     typedef struct _INDICES_BUF
     {
@@ -69,8 +72,9 @@ namespace SWBF2::Native
             TEXTURE_UNK4
         };
 
-        ModelSegmentInfo m_info;
-
+        PrimitiveType m_primitiveType;
+        uint32_t m_vertexCount;
+        uint32_t m_primitiveCount;
         Material m_material;
         std::string p_renderType; // TODO: enum?
         std::array<std::string, 4> m_textureNames;
