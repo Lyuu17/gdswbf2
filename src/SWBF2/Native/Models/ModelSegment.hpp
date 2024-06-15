@@ -52,7 +52,7 @@ namespace SWBF2::Native
         std::vector<Vector3<float>> m_tangents;
         std::vector<Vector3<float>> m_biTangents;
 
-        std::vector<RGBA> m_colors;
+        std::vector<godot::Color> m_colors;
         std::vector<Vector2<float>> m_texCoords;
 
         std::vector<Vector3<uint8_t>> m_boneIndices;
@@ -65,7 +65,7 @@ namespace SWBF2::Native
 
         Material m_material;
         std::string p_renderType; // TODO: enum?
-        std::vector<std::string> m_textureNames;
+        std::array<std::string, 4> m_textureNames;
         IndicesBuf m_indicesBuf;
         VerticesBuf m_verticesBuf;
         std::string m_parent;

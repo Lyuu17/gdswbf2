@@ -32,41 +32,24 @@ namespace SWBF2
                 meshInstance->set_name(std::format("{}_segm_{}", id, segment_id).c_str());
 
                 godot::PackedVector3Array vertices;
+                vertices.resize(segment.m_verticesBuf.m_positions.size());
+                std::copy(segment.m_verticesBuf.m_positions.begin(), segment.m_verticesBuf.m_positions.end(), reinterpret_cast<Vector3<float>*>(vertices.ptrw()));
+
                 godot::PackedVector3Array normals;
-                //godot::PackedVector3Array tangents;
+                normals.resize(segment.m_verticesBuf.m_normals.size());
+                std::copy(segment.m_verticesBuf.m_normals.begin(), segment.m_verticesBuf.m_normals.end(), reinterpret_cast<Vector3<float>*>(normals.ptrw()));
+
                 godot::PackedColorArray colors;
+                colors.resize(segment.m_verticesBuf.m_colors.size());
+                std::copy(segment.m_verticesBuf.m_colors.begin(), segment.m_verticesBuf.m_colors.end(), colors.ptrw());
+
                 godot::PackedVector2Array uvs;
+                uvs.resize(segment.m_verticesBuf.m_texCoords.size());
+                std::copy(segment.m_verticesBuf.m_texCoords.begin(), segment.m_verticesBuf.m_texCoords.end(), reinterpret_cast<Vector2<float>*>(uvs.ptrw()));
+
                 godot::PackedInt32Array indices;
-
-                for (const auto &position : segment.m_verticesBuf.m_positions)
-                {
-                    vertices.push_back({ position.x, position.y, position.z });
-                }
-
-                for (const auto &normal : segment.m_verticesBuf.m_normals)
-                {
-                    normals.push_back({ normal.x, normal.y, normal.z });
-                }
-
-                /*for (uint32_t i = 0; i < segment.m_verticesBuf.m_tangents.size(); i++)
-                {
-                    tangents.push_back({ segment.m_verticesBuf.m_tangents[i].x, segment.m_verticesBuf.m_tangents[i].y, segment.m_verticesBuf.m_tangents[i].z });
-                }*/
-
-                for (const auto &color : segment.m_verticesBuf.m_colors)
-                {
-                    colors.push_back({ (float)color.color.r / 255.0f, (float)color.color.g / 255.0f, (float)color.color.b / 255.0f, (float)color.color.a / 255.0f });
-                }
-
-                for (const auto &texCoord : segment.m_verticesBuf.m_texCoords)
-                {
-                    uvs.push_back({ texCoord.x, texCoord.y });
-                }
-
-                for (std::size_t i = 0; i < segment.m_indicesBuf.m_indices.size(); i++)
-                {
-                    indices.push_back({ segment.m_indicesBuf.m_indices[i] });
-                }
+                indices.resize(segment.m_indicesBuf.m_indices.size());
+                std::copy(segment.m_indicesBuf.m_indices.begin(), segment.m_indicesBuf.m_indices.end(), indices.ptrw());
 
                 godot::Array arrays;
                 arrays.resize(godot::ArrayMesh::ARRAY_MAX);
@@ -85,8 +68,7 @@ namespace SWBF2
                 auto tex_id = 0;
                 for (const auto &texName : segment.m_textureNames)
                 {
-                    // TODO, apply bump to texture
-                    if (texName.ends_with("bump"))
+                    if (texName.empty())
                         continue;
 
                     auto &material = m_materialPool.getItem(texName);
@@ -101,7 +83,7 @@ namespace SWBF2
                     // if (segment.m_material.m_flags & Native::MaterialFlags::Transparent)
                     //    material->set_transparency(godot::BaseMaterial3D::TRANSPARENCY_ALPHA_SCISSOR);
 
-                    meshInstance->set_surface_override_material(0, material);
+                    meshInstance->set_surface_override_material(tex_id, material);
 
                     tex_id++;
                 }

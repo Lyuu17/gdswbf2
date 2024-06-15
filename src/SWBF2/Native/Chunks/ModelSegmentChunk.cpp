@@ -13,8 +13,9 @@ namespace SWBF2::Native
         ModelSegment segment;
 
         auto infoReaderChild = streamReader.ReadChildWithHeader<"INFO"_m>();
-
-        *infoReaderChild >> segment.m_info;
+        {
+            *infoReaderChild >> segment.m_info;
+        }
 
         std::optional<StreamReader> readerChild;
         while ((readerChild = streamReader.ReadChild()).has_value())
@@ -70,11 +71,8 @@ namespace SWBF2::Native
                     std::string texName;
                     *readerChild >> texName;
 
-                    if (!texName.empty())
-                    {
-                        string_tolower(texName);
-                        segment.m_textureNames.push_back(texName);
-                    }
+                    string_tolower(texName);
+                    segment.m_textureNames[index] = texName;
 
                     break;
                 }
@@ -196,17 +194,19 @@ namespace SWBF2::Native
 
         if ((segment.m_verticesBuf.m_flags & VBUFFlags::Color) != 0)
         {
-            RGBA color;
-            streamReader >> color;
+            uint8_t colors[4];
+            streamReader >> colors;
 
+            godot::Color color{ (float)colors[0] / 255.0f, (float)colors[1] / 255.0f, (float)colors[2] / 255.0f, (float)colors[3] / 255.0f };
             segment.m_verticesBuf.m_colors.push_back(color);
         }
 
         if ((segment.m_verticesBuf.m_flags & VBUFFlags::StaticLighting) != 0)
         {
-            RGBA color;
-            streamReader >> color;
+            uint8_t colors[4];
+            streamReader >> colors;
 
+            godot::Color color{ (float)colors[0] / 255.0f, (float)colors[1] / 255.0f, (float)colors[2] / 255.0f, (float)colors[3] / 255.0f };
             segment.m_verticesBuf.m_colors.push_back(color);
         }
 

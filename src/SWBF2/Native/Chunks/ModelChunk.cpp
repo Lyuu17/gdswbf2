@@ -16,23 +16,27 @@ namespace SWBF2::Native
         Model model;
 
         auto modelNameReaderChild = streamReader.ReadChildWithHeader<"NAME"_m>();
-
-        *modelNameReaderChild >> model.m_name;
+        {
+            *modelNameReaderChild >> model.m_name;
+        }
 
         auto vertexReaderChild = streamReader.ReadChildWithHeader<"VRTX"_m>();
+        {
+            std::vector<std::byte> vertex;
+            vertex.resize(vertexReaderChild->GetHeader().size);
 
-        std::vector<std::byte> vertex;
-        vertex.resize(vertexReaderChild->GetHeader().size);
-
-        *vertexReaderChild >> vertex;
+            *vertexReaderChild >> vertex;
+        }
 
         auto nodeReaderChild = streamReader.ReadChildWithHeader<"NODE"_m>();
-
-        *nodeReaderChild >> model.m_node;
+        {
+            *nodeReaderChild >> model.m_node;
+        }
 
         auto infoReaderChild = streamReader.ReadChildWithHeader<"INFO"_m>();
-
-        *infoReaderChild >> model.m_info;
+        {
+            *infoReaderChild >> model.m_info;
+        }
 
         std::optional<StreamReader> readerChild;
         while ((readerChild = streamReader.ReadChild()).has_value())
