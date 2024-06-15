@@ -80,8 +80,8 @@ namespace SWBF2
 
                     godot::UtilityFunctions::print(__FILE__, ":", __LINE__, ": Found texture ", texName.c_str(), " for mesh ", id.c_str(), " with segment id ", segment_id);
 
-                    // if (segment.m_material.m_flags & Native::MaterialFlags::Transparent)
-                    //    material->set_transparency(godot::BaseMaterial3D::TRANSPARENCY_ALPHA_SCISSOR);
+                    if (segment.m_material.m_flags & Native::Material::MATERIAL_TRANSPARENT)
+                        material->set_transparency(godot::BaseMaterial3D::TRANSPARENCY_ALPHA);
 
                     meshInstance->set_surface_override_material(tex_id, material);
 

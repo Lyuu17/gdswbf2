@@ -5,29 +5,29 @@
 
 namespace SWBF2::Native
 {
-    enum class MaterialFlags : uint32_t {
-        Normal = 1,
-        Hardedged = 2,
-        Transparent = 4,
-        Glossmap = 8,
-        Glow = 16,
-        BumpMap = 32,
-        Additive = 64,
-        Specular = 128,
-        EnvMap = 256,
-        VertexLighting = 512,
-        TiledNormalmap = 2048,
-        Doublesided = 65536,
-
-        Scrolling = 16777216,
-        Energy = 33554432,
-        Animated = 67108864,
-
-        AttachedLight = 134217728,
-    };
-
     class Material {
     public:
+        enum MaterialFlags : uint32_t {
+            MATERIAL_NORMAL = 1,
+            MATERIAL_HARDEDGED = 2,
+            MATERIAL_TRANSPARENT = 4,
+            MATERIAL_GLOSSMAP = 8,
+            MATERIAL_GLOW = 16,
+            MATERIAL_BUMPMAP = 32,
+            MATERIAL_ADDITIVE = 64,
+            MATERIAL_SPECULAR = 128,
+            MATERIAL_ENVMAP = 256,
+            MATERIAL_VERTEXLIGHTING = 512,
+            MATERIAL_TILEDNORMALMAP = 2048,
+            MATERIAL_DOUBLESIDED = 65536,
+
+            MATERIAL_SCROLLING = 16777216,
+            MATERIAL_ENERGY = 33554432,
+            MATERIAL_ANIMATED = 67108864,
+
+            MATERIAL_ATTACHEDLIGHT = 134217728,
+        };
+
         MaterialFlags m_flags;
         RGBA m_diffuseColor;
         RGBA m_specularColor;
