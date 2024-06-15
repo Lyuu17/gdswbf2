@@ -61,6 +61,14 @@ namespace SWBF2::Native
 
     class ModelSegment {
     public:
+        enum TextureType
+        {
+            TEXTURE_DEFAULT = 0,
+            TEXTURE_NORMAL,
+            TEXTURE_UNK3,
+            TEXTURE_UNK4
+        };
+
         ModelSegmentInfo m_info;
 
         Material m_material;

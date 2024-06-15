@@ -18,10 +18,10 @@ namespace SWBF2
 
         SWBF2::Native::UcfbChunk::ReadUcfbFile("data/_lvl_pc/cor/cor1.lvl");
 
-        LoadMeshes();
+        LoadLevelMeshes();
     }
 
-    void Level::LoadMeshes()
+    void Level::LoadLevelMeshes()
     {
         for (auto const &[id, model] : Native::Level::m_models)
         {
@@ -65,27 +65,29 @@ namespace SWBF2
 
                 meshInstance->set_mesh(arrMesh);
 
-                auto tex_id = 0;
-                for (const auto &texName : segment.m_textureNames)
+                if (!segment.m_textureNames.empty())
                 {
-                    if (texName.empty())
-                        continue;
+                    static godot::Ref<godot::StandardMaterial3D> emptyGodotRef;
 
-                    auto &material = m_materialPool.getItem(texName);
-                    if (material.is_null())
+                    const auto &mainTextureName = segment.m_textureNames[Native::ModelSegment::TEXTURE_DEFAULT];
+                    const auto &bumpTextureName = segment.m_textureNames[Native::ModelSegment::TEXTURE_NORMAL];
+
+                    auto &material = m_materialPool.getItem(mainTextureName);
+                    if (material.is_valid())
                     {
-                        godot::UtilityFunctions::printerr(__FILE__, ":", __LINE__, ": No material found for ", texName.c_str());
-                        continue;
+                        if (!bumpTextureName.empty() && Native::Level::m_tex.contains(bumpTextureName))
+                        {
+                            auto &bumpTexture = Native::Level::m_tex[bumpTextureName].m_formats[0].m_faceLevels[0].m_gdTexture;
+
+                            material->set_feature(godot::BaseMaterial3D::FEATURE_NORMAL_MAPPING, true);
+                            material->set_texture(godot::BaseMaterial3D::TEXTURE_NORMAL, bumpTexture);
+                        }
+
+                        if (segment.m_material.m_flags & Native::Material::MATERIAL_TRANSPARENT)
+                            material->set_transparency(godot::BaseMaterial3D::TRANSPARENCY_ALPHA);
+
+                        meshInstance->set_surface_override_material(0, material);
                     }
-
-                    godot::UtilityFunctions::print(__FILE__, ":", __LINE__, ": Found texture ", texName.c_str(), " for mesh ", id.c_str(), " with segment id ", segment_id);
-
-                    if (segment.m_material.m_flags & Native::Material::MATERIAL_TRANSPARENT)
-                        material->set_transparency(godot::BaseMaterial3D::TRANSPARENCY_ALPHA);
-
-                    meshInstance->set_surface_override_material(tex_id, material);
-
-                    tex_id++;
                 }
 
                 if (meshInstance->get_material_override().is_null())

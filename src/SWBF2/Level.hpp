@@ -19,7 +19,7 @@ namespace SWBF2
 
         virtual void _ready() override;
 
-        void LoadMeshes();
+        void LoadLevelMeshes();
 
         void _process(double delta_time) override;
 
