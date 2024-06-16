@@ -3,6 +3,7 @@
 
 #include <godot_cpp/classes/node3d.hpp>
 #include <godot_cpp/classes/standard_material3d.hpp>
+#include <godot_cpp/classes/mesh_instance3d.hpp>
 
 #include "MaterialPools.hpp"
 
@@ -19,7 +20,7 @@ namespace SWBF2
 
         virtual void _ready() override;
 
-        void LoadLevelMeshes();
+        godot::MeshInstance3D *LoadModel(const std::string &id);
         void LoadLevelInstances();
 
         void _process(double delta_time) override;
