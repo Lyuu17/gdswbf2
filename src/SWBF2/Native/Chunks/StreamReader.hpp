@@ -97,5 +97,15 @@ namespace SWBF2::Native
 
             return *this;
         }
+
+        StreamReader &operator>>(std::u8string &value)
+        {
+            const char8_t *str = reinterpret_cast<const char8_t *>(&m_data[m_head]);
+            std::size_t len = std::distance(str, std::find(str, str + GetHeader().size, '\0'));
+
+            value = std::u8string_view(str, len);
+
+            return *this;
+        }
     };
 }

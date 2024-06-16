@@ -20,6 +20,7 @@ namespace SWBF2
         SWBF2::Native::UcfbChunk::ReadUcfbFile("data/_lvl_pc/cor/cor1.lvl");
 
         LoadLevelMeshes();
+        LoadLevelInstances();
     }
 
     void Level::LoadLevelMeshes()
@@ -102,7 +103,24 @@ namespace SWBF2
 
             add_child(meshInstance);
             meshInstance->set_owner(this->get_parent());
-            meshInstance->add_to_group("Level Meshes");
+            meshInstance->set_unique_name_in_owner(true);
+        }
+    }
+
+    void Level::LoadLevelInstances()
+    {
+        for (const auto &inst : Native::Level::m_world.m_instances)
+        {
+            godot::MeshInstance3D *mesh = get_node<godot::MeshInstance3D>(inst.m_type.c_str());
+            if (!mesh)
+            {
+                godot::UtilityFunctions::printerr(__FILE__, ":", __LINE__, ": Missing mesh for instance ", inst.m_type.c_str());
+                continue;
+            }
+
+            mesh->set_name(inst.m_name.c_str());
+            mesh->translate(inst.m_position);
+            mesh->set_basis(inst.m_rotationMatrix);
         }
     }
 
