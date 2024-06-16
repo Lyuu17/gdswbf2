@@ -27,6 +27,10 @@ namespace SWBF2
     {
         for (auto const &[id, model] : Native::Level::m_models)
         {
+            // skip LOWD
+            if (id.ends_with("LOWD"))
+                continue;
+
             godot::MeshInstance3D *meshInstance = memnew(godot::MeshInstance3D);
             meshInstance->set_name(id.c_str());
 
