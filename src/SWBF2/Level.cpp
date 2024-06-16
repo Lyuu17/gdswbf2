@@ -26,12 +26,13 @@ namespace SWBF2
     {
         for (auto const &[id, model] : Native::Level::m_models)
         {
-            uint32_t segment_id = 0;
+            godot::MeshInstance3D *meshInstance = memnew(godot::MeshInstance3D);
+            meshInstance->set_name(id.c_str());
+
+            godot::ArrayMesh *arrMesh = memnew(godot::ArrayMesh);
+
             for (auto const &segment : model.m_segments)
             {
-                godot::MeshInstance3D *meshInstance = memnew(godot::MeshInstance3D);
-                meshInstance->set_name(std::format("{}_segm_{}", id, segment_id).c_str());
-
                 godot::PackedVector3Array vertices;
                 vertices.resize(segment.m_verticesBuf.m_positions.size());
                 std::copy(segment.m_verticesBuf.m_positions.begin(), segment.m_verticesBuf.m_positions.end(), reinterpret_cast<Vector3<float>*>(vertices.ptrw()));
@@ -61,12 +62,9 @@ namespace SWBF2
                 arrays[godot::ArrayMesh::ARRAY_TEX_UV] = uvs;
                 arrays[godot::ArrayMesh::ARRAY_INDEX] = indices;
 
-                godot::ArrayMesh *arrMesh = memnew(godot::ArrayMesh);
-
                 arrMesh->add_surface_from_arrays(Native::ModelUtils::DXtoGLPrimitiveType(segment.m_primitiveType), arrays);
 
-                meshInstance->set_mesh(arrMesh);
-
+                uint32_t surfaceId = arrMesh->get_surface_count() - 1;
                 if (!segment.m_textureNames.empty())
                 {
                     const auto &mainTextureName = segment.m_textureNames[Native::ModelSegment::TEXTURE_DEFAULT];
@@ -90,21 +88,21 @@ namespace SWBF2
                         if (segment.m_material.m_flags & Native::Material::MATERIAL_TRANSPARENT)
                             material->set_transparency(godot::BaseMaterial3D::TRANSPARENCY_ALPHA);
 
-                        meshInstance->set_surface_override_material(0, material);
+                        arrMesh->surface_set_material(surfaceId, material);
                     }
                 }
 
-                if (meshInstance->get_material_override().is_null())
+                if (arrMesh->surface_get_material(surfaceId).is_null())
                 {
                     godot::UtilityFunctions::printerr(__FILE__, ":", __LINE__, ": Mesh ", id.c_str(), " has no texture at all");
                 }
-
-                add_child(meshInstance);
-                meshInstance->set_owner(this->get_parent());
-                meshInstance->add_to_group("Level Meshes");
-
-                segment_id++;
             }
+
+            meshInstance->set_mesh(arrMesh);
+
+            add_child(meshInstance);
+            meshInstance->set_owner(this->get_parent());
+            meshInstance->add_to_group("Level Meshes");
         }
     }
 
