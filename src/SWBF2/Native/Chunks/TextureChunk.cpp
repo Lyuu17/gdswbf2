@@ -4,9 +4,8 @@
 
 #include "Native/Chunks/StreamReader.hpp"
 #include "Native/Chunks/TextureChunk.hpp"
-
 #include "Native/Texture/TextureUtils.hpp"
-#include "Native/Level.hpp"
+#include "Native/SWBF2.hpp"
 
 namespace SWBF2::Native
 {
@@ -44,7 +43,7 @@ namespace SWBF2::Native
             }
         }
 
-        Level::m_tex.try_emplace(tex.m_name, std::move(tex));
+        SWBF2::m_tex.try_emplace(tex.m_name, std::move(tex));
     }
 
     void TextureChunk::ProcessFMTChunk(StreamReader &streamReader, Texture &tex)

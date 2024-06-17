@@ -1,12 +1,10 @@
 
 #include <godot_cpp/variant/utility_functions.hpp>
 
-#include "StreamReader.hpp"
-#include "ChunkProcessor.hpp"
-
-#include "LoclChunk.hpp"
-
-#include "Native/Level.hpp"
+#include "Native/Chunks/StreamReader.hpp"
+#include "Native/Chunks/ChunkProcessor.hpp"
+#include "Native/Chunks/LoclChunk.hpp"
+#include "Native/SWBF2.hpp"
 
 namespace SWBF2::Native
 {
@@ -38,6 +36,6 @@ namespace SWBF2::Native
 
         streamReader >> chars;
 
-        Level::m_locl[loclName].insert_or_assign(hash, chars.data());
+        SWBF2::m_locl[loclName].insert_or_assign(hash, chars.data());
     }
 }

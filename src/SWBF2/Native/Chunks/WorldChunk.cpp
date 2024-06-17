@@ -2,17 +2,25 @@
 
 #include "Native/Chunks/StreamReader.hpp"
 #include "Native/Chunks/WorldChunk.hpp"
-#include "Native/Level.hpp"
-
 #include "Native/Instance.hpp"
+#include "Native/SWBF2.hpp"
 
 namespace SWBF2::Native
 {
     void WorldChunk::ProcessChunk(StreamReader &streamReader)
     {
+        World world{};
+
+        ProcessWorldChunk(streamReader, world);
+
+        SWBF2::m_worlds.insert_or_assign(world.m_worldName, world);
+    }
+
+    void WorldChunk::ProcessWorldChunk(StreamReader &streamReader, World &world)
+    {
         auto nameReaderChild = streamReader.ReadChildWithHeader<"NAME"_m>();
         {
-            *nameReaderChild >> Level::m_world.m_worldName;
+            *nameReaderChild >> world.m_worldName;
         }
 
         std::optional<StreamReader> readerChild;
@@ -22,20 +30,20 @@ namespace SWBF2::Native
             {
                 case "TNAM"_m:
                 {
-                    *readerChild >> Level::m_world.m_terrainName;
+                    *readerChild >> world.m_terrainName;
                     break;
                 }
 
                 case "SNAM"_m:
                 {
-                    *readerChild >> Level::m_world.m_skyName;
+                    *readerChild >> world.m_skyName;
                     break;
                 }
 
                 case "inst"_m:
                 {
                     StreamReader r{ *readerChild };
-                    ProcessInstChunk(r);
+                    ProcessInstChunk(r, world);
                     break;
                 }
 
@@ -45,7 +53,7 @@ namespace SWBF2::Native
         }
     }
 
-    void WorldChunk::ProcessInstChunk(StreamReader &streamReader)
+    void WorldChunk::ProcessInstChunk(StreamReader &streamReader, World &world)
     {
         Instance inst{};
 
@@ -86,6 +94,6 @@ namespace SWBF2::Native
             inst.m_properties.insert_or_assign(prop, value);
         }
 
-        Level::m_world.m_instances.push_back(inst);
+        world.m_instances.push_back(inst);
     }
 }

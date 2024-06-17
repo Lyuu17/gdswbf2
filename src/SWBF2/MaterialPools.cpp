@@ -1,7 +1,7 @@
 
 #pragma once
 
-#include "Native/Level.hpp"
+#include "Native/SWBF2.hpp"
 
 #include "MaterialPools.hpp"
 
@@ -9,10 +9,10 @@ namespace SWBF2
 {
     const godot::Ref<godot::Texture> &SWBF2::MaterialPools::findTexture(const std::string &id)
     {
-        if (!Native::Level::m_tex.contains(id))
+        if (!Native::SWBF2::m_tex.contains(id))
             return m_empty;
 
-        auto &tex = Native::Level::m_tex[id];
+        auto &tex = Native::SWBF2::m_tex[id];
         auto &gdTex = tex.m_formats.at(0).m_faceLevels.at(0).m_gdTexture;
         return gdTex;
     }

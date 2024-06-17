@@ -2,12 +2,11 @@
 
 #include "StreamReader.hpp"
 
-#include "ModelChunk.hpp"
-#include "ModelSegmentChunk.hpp"
-
-#include "Native/Level.hpp"
+#include "Native/Chunks/ModelChunk.hpp"
+#include "Native/Chunks/ModelSegmentChunk.hpp"
 #include "Native/Models/Model.hpp"
 #include "Native/Models/ModelSegment.hpp"
+#include "Native/SWBF2.hpp"
 
 namespace SWBF2::Native
 {
@@ -56,6 +55,6 @@ namespace SWBF2::Native
             }
         }
 
-        Level::m_models.insert_or_assign(model.m_name, model);
+        SWBF2::m_models.insert_or_assign(model.m_name, model);
     }
 }

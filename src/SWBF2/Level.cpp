@@ -7,7 +7,7 @@
 
 #include "Native/Chunks/ChunkProcessor.hpp"
 #include "Native/Models/ModelUtils.hpp"
-#include "Native/Level.hpp"
+#include "Native/SWBF2.hpp"
 
 #include "Level.hpp"
 
@@ -17,20 +17,19 @@ namespace SWBF2
     {
         set_name("Level");
 
-        SWBF2::Native::UcfbChunk::ReadUcfbFile("data/_lvl_pc/cor/cor1.lvl");
+        Native::SWBF2::LoadLevelWithGamemode("yav/yav1", "ctf");
 
         LoadLevelInstances();
     }
 
     godot::MeshInstance3D *Level::LoadModel(const std::string &id)
     {
-        if (!Native::Level::m_models.contains(id))
+        if (!Native::SWBF2::m_models.contains(id))
         {
-            godot::UtilityFunctions::printerr(__FILE__, ":", __LINE__, ": Failed to load unknown model id ", id.c_str());
             return nullptr;
         }
 
-        const auto &model = Native::Level::m_models[id];
+        const auto &model = Native::SWBF2::m_models[id];
 
         godot::MeshInstance3D *meshInstance = memnew(godot::MeshInstance3D);
         meshInstance->set_name(id.c_str());
@@ -78,9 +77,9 @@ namespace SWBF2
                 auto &material = m_materialPool.getItem(mainTextureName);
                 if (material.is_valid())
                 {
-                    if (!bumpTextureName.empty() && Native::Level::m_tex.contains(bumpTextureName))
+                    if (!bumpTextureName.empty() && Native::SWBF2::m_tex.contains(bumpTextureName))
                     {
-                        auto &bumpTexture = Native::Level::m_tex[bumpTextureName].m_formats[0].m_faceLevels[0].m_gdTexture;
+                        auto &bumpTexture = Native::SWBF2::m_tex[bumpTextureName].m_formats[0].m_faceLevels[0].m_gdTexture;
 
                         material->set_feature(godot::BaseMaterial3D::FEATURE_NORMAL_MAPPING, true);
                         material->set_texture(godot::BaseMaterial3D::TEXTURE_NORMAL, bumpTexture);
@@ -110,23 +109,26 @@ namespace SWBF2
 
     void Level::LoadLevelInstances()
     {
-        for (const auto &inst : Native::Level::m_world.m_instances)
+        for (const auto &[worldId, world] : Native::SWBF2::m_worlds)
         {
-            godot::MeshInstance3D *mesh = LoadModel(inst.m_type);
-            if (!mesh)
+            for (const auto &inst : world.m_instances)
             {
-                godot::UtilityFunctions::printerr(__FILE__, ":", __LINE__, ": Missing mesh for instance ", inst.m_type.c_str());
-                continue;
+                godot::MeshInstance3D *mesh = LoadModel(inst.m_type);
+                if (!mesh)
+                {
+                    godot::UtilityFunctions::printerr(__FILE__, ":", __LINE__, ": Missing mesh for instance ", inst.m_type.c_str());
+                    continue;
+                }
+
+                mesh->set_name(inst.m_name.c_str());
+                mesh->translate(inst.m_position);
+                mesh->set_basis(inst.m_rotationMatrix);
+
+                add_child(mesh);
+
+                mesh->set_owner(this->get_parent());
+                mesh->set_unique_name_in_owner(true);
             }
-
-            mesh->set_name(inst.m_name.c_str());
-            mesh->translate(inst.m_position);
-            mesh->set_basis(inst.m_rotationMatrix);
-
-            add_child(mesh);
-
-            mesh->set_owner(this->get_parent());
-            mesh->set_unique_name_in_owner(true);
         }
     }
 
