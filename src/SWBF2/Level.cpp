@@ -62,7 +62,8 @@ namespace SWBF2
             arrays[godot::ArrayMesh::ARRAY_VERTEX] = vertices;
             arrays[godot::ArrayMesh::ARRAY_NORMAL] = normals;
             //arrays[godot::ArrayMesh::ARRAY_TANGENT] = tangents;
-            arrays[godot::ArrayMesh::ARRAY_COLOR] = colors;
+            if (colors.size() > 0)
+                arrays[godot::ArrayMesh::ARRAY_COLOR] = colors;
             arrays[godot::ArrayMesh::ARRAY_TEX_UV] = uvs;
             arrays[godot::ArrayMesh::ARRAY_INDEX] = indices;
 
