@@ -20,6 +20,21 @@ namespace SWBF2::Native
         float m_float;
         std::string m_string;
         std::vector<float> m_vecFloat;
+
+        inline godot::Vector3 ToVector3() const
+        {
+            return godot::Vector3{ m_vecFloat.at(0), m_vecFloat.at(1), m_vecFloat.at(2) };
+        }
+
+        inline godot::Quaternion ToQuaternion() const
+        {
+            return godot::Quaternion{ m_vecFloat.at(0), m_vecFloat.at(1), m_vecFloat.at(2), m_vecFloat.at(3) };
+        }
+
+        inline godot::Color ToColor() const
+        {
+            return godot::Color{ m_vecFloat.at(0), m_vecFloat.at(1), m_vecFloat.at(2) };
+        }
     };
 
     class ConfigNode : public ConfigData {
@@ -42,7 +57,7 @@ namespace SWBF2::Native
     public:
         ConfigReader(StreamReader &streamReader);
 
-        std::string m_name;
+        uint32_t m_nameHash;
 
         ConfigNode m_data;
 

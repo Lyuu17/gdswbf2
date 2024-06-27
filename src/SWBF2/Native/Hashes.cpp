@@ -7,12 +7,12 @@ namespace SWBF2::Native
 {
     // taken from swbf2-unmunge
 
-    std::pair<std::uint32_t, std::string_view> operator""_fnvp(const char *str, std::size_t length)
+    std::pair<std::uint32_t, std::string> operator""_fnvp(const char *str, std::size_t length)
     {
         return { (uint32_t)FNVGenerateHash({str, length}), {str, length} };
     }
 
-    const std::unordered_map<std::uint32_t, std::string_view> GameHashes
+    const std::unordered_map<std::uint32_t, std::string> GameHashes
     {
        "--AttachOdf"_fnvp,
        "--AttachToHardPoint"_fnvp,

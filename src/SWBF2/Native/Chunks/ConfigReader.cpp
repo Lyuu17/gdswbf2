@@ -9,16 +9,13 @@
 namespace SWBF2::Native
 {
     ConfigReader::ConfigReader(StreamReader &streamReader)
-        : m_data({})
+        : m_nameHash(0), m_data({})
     {
         auto nameReaderChild = streamReader.ReadChildWithHeader<"NAME"_m>();
 
         if (nameReaderChild.has_value())
         {
-            uint32_t nameHash;
-            *nameReaderChild >> nameHash;
-
-            m_name = GameHashes.contains(nameHash) ? GameHashes.at(nameHash) : "unknown";
+            *nameReaderChild >> m_nameHash;
         }
 
         while (streamReader.IsNextHeader<"DATA"_m>())
@@ -31,12 +28,30 @@ namespace SWBF2::Native
     {
         auto dataReaderChild = streamReader.ReadChildWithHeader<"DATA"_m>();
         {
-            FNVHash hash;
-            *dataReaderChild >> hash;
+#pragma pack(push, 1)
+            struct {
+                FNVHash hash;
+                uint8_t count;
+            } data;
+#pragma pack(pop)
+
+            *dataReaderChild >> data;
+
+            auto &node = parentConfigNode.createNode(data.hash);
+            if (data.count > 0)
+            {
+                uint32_t stringSize;
+                *dataReaderChild >> stringSize;
+
+                dataReaderChild->SkipBytes(sizeof(FNVHash) * data.count);
+
+                node.m_string.resize(stringSize);
+                *dataReaderChild >> node.m_string;
+            }
 
             auto scopReaderChild = streamReader.ReadChildWithHeader<"SCOP"_m>();
             {
-                ReadDataScop(*scopReaderChild, parentConfigNode.createNode(hash));
+                ReadDataScop(*scopReaderChild, node);
             }
         }
     }

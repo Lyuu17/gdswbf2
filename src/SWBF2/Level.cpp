@@ -7,10 +7,12 @@
 #include <godot_cpp/classes/world_environment.hpp>
 #include <godot_cpp/classes/sky.hpp>
 #include <godot_cpp/classes/procedural_sky_material.hpp>
+#include <godot_cpp/classes/directional_light3d.hpp>
 #include <godot_cpp/variant/color.hpp>
 
 #include "Native/Chunks/ChunkProcessor.hpp"
 #include "Native/Models/ModelUtils.hpp"
+#include "Native/Hashes.hpp"
 #include "Native/SWBF2.hpp"
 
 #include "Level.hpp"
@@ -25,7 +27,8 @@ namespace SWBF2
             throw std::runtime_error{ "failed to load the game level" };
 
         LoadLevelInstances();
-        LoadSkybox();
+        LoadWorldEnvironment();
+        LoadLights();
     }
 
     godot::MeshInstance3D *Level::LoadModel(const std::string &id)
@@ -139,25 +142,52 @@ namespace SWBF2
         }
     }
 
-    void Level::LoadSkybox()
+    void Level::LoadWorldEnvironment()
     {
         godot::WorldEnvironment *worldEnv = memnew(godot::WorldEnvironment);
-        godot::Environment *env = memnew(godot::Environment);
-        godot::Sky *sky = memnew(godot::Sky);
+        {
+            worldEnv->set_name("WorldEnvironment");
 
-        auto &texture = Native::SWBF2::m_tex[Native::SWBF2::m_skyDome.m_texture].m_formats[0].m_faceLevels[0].m_gdTexture;
-        godot::ProceduralSkyMaterial *procSkyMaterial = memnew(godot::ProceduralSkyMaterial);
-        procSkyMaterial->set_sky_cover(texture);
+            godot::Environment *env = memnew(godot::Environment);
+            {
+                godot::Sky *sky = memnew(godot::Sky);
+                {
+                    auto &texture = Native::SWBF2::m_tex[Native::SWBF2::m_skyDome.m_texture].m_formats[0].m_faceLevels[0].m_gdTexture;
+                    godot::ProceduralSkyMaterial *procSkyMaterial = memnew(godot::ProceduralSkyMaterial);
+                    procSkyMaterial->set_sky_cover(texture);
 
-        sky->set_material(procSkyMaterial);
+                    sky->set_material(procSkyMaterial);
+                }
 
-        env->set_background(godot::Environment::BG_SKY);
-        env->set_sky(sky);
-        worldEnv->set_environment(env);
+                env->set_background(godot::Environment::BG_SKY);
+                env->set_sky(sky);
+            }
+
+            worldEnv->set_environment(env);
+        }
 
         add_child(worldEnv);
 
         worldEnv->set_owner(this->get_parent());
+    }
+
+    void Level::LoadLights()
+    {
+        for (const auto &[id, light] : SWBF2::Native::SWBF2::m_lights)
+        {
+            godot::DirectionalLight3D *directionalLight3D = memnew(godot::DirectionalLight3D);
+            directionalLight3D->set_name(light.m_name.c_str());
+            directionalLight3D->set_position(light.m_position);
+            directionalLight3D->set_rotation(light.m_rotation.get_euler());
+            directionalLight3D->set_color(light.m_color);
+            directionalLight3D->set_shadow(light.m_castShadow);
+            directionalLight3D->set_param(godot::Light3D::PARAM_SPECULAR, light.m_castSpecular);
+            directionalLight3D->set_param(godot::Light3D::PARAM_RANGE, light.m_range);
+
+            add_child(directionalLight3D);
+
+            directionalLight3D->set_owner(get_parent());
+        }
     }
 
     void Level::_process(double delta_time)

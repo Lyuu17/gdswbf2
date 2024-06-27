@@ -2,7 +2,7 @@
 
 namespace SWBF2::Native
 {
-    enum class FNVHash : uint32_t;
+    typedef uint32_t FNVHash;
 
     constexpr FNVHash FNVGenerateHash(const std::string &str)
     {

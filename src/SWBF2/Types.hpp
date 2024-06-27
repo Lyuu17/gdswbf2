@@ -23,7 +23,7 @@
 namespace SWBF2
 {
     typedef uint32_t ChunkSize;
-
+    typedef uint32_t FNVHash;
     typedef uint16_t SWBF2Handle;
 
     constexpr auto SWBF2HANDLE_INVALID = 0xffff;
