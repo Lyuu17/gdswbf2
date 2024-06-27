@@ -78,19 +78,15 @@ namespace SWBF2::Native
 
     void ConfigReader::ReadDataElements(StreamReader &streamReader, ConfigNode &parentConfigNode, uint8_t count)
     {
-#pragma pack(push, 1)
-        struct
-        {
-            float floatValue;
-            uint32_t stringSize;
-        } data_element;
-#pragma pack(pop)
-
-        streamReader >> data_element;
+        float floatValue;
+        streamReader >> floatValue;
 
         if (count == 1)
         {
-            if (data_element.stringSize > 0)
+            uint32_t stringSize;
+            streamReader >> stringSize;
+
+            if (stringSize > 0)
             {
                 parentConfigNode.m_dataType = ConfigDataType::STRING;
 
@@ -99,20 +95,19 @@ namespace SWBF2::Native
             else
             {
                 parentConfigNode.m_dataType = ConfigDataType::FLOAT;
-                parentConfigNode.m_float = data_element.floatValue;
+                parentConfigNode.m_float = floatValue;
             }
         }
         else
         {
             parentConfigNode.m_dataType = ConfigDataType::FLOAT_VECTOR;
-            parentConfigNode.m_vecFloat.push_back(data_element.floatValue);
+            parentConfigNode.m_vecFloat.push_back(floatValue);
 
             for (int i = 1; i < count; i++)
             {
                 float elementValue;
                 streamReader >> elementValue;
 
-                parentConfigNode.m_dataType = ConfigDataType::FLOAT_VECTOR;
                 parentConfigNode.m_vecFloat.push_back(elementValue);
             }
         }
