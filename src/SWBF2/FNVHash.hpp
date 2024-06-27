@@ -1,8 +1,8 @@
 #pragma once
 
-namespace SWBF2
+namespace SWBF2::Native
 {
-    typedef uint32_t FNVHash;
+    enum class FNVHash : uint32_t;
 
     constexpr FNVHash FNVGenerateHash(const std::string &str)
     {
@@ -21,7 +21,7 @@ namespace SWBF2
             hash *= FNV_prime;
         }
 
-        return hash;
+        return (FNVHash)hash;
     }
 
     constexpr FNVHash operator""_fnv(const char *str, const std::size_t length)

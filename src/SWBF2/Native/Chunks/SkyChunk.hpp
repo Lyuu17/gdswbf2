@@ -4,9 +4,9 @@
 
 namespace SWBF2::Native
 {
-    class UcfbChunk {
+    class SkyChunk {
     public:
-        static bool ReadUcfbFile(const std::string &filename);
         static void ProcessChunk(StreamReader &streamReader);
     };
+
 }

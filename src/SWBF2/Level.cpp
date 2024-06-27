@@ -3,6 +3,10 @@
 #include <godot_cpp/classes/mesh_instance3d.hpp>
 #include <godot_cpp/classes/image_texture.hpp>
 #include <godot_cpp/classes/standard_material3d.hpp>
+#include <godot_cpp/classes/environment.hpp>
+#include <godot_cpp/classes/world_environment.hpp>
+#include <godot_cpp/classes/sky.hpp>
+#include <godot_cpp/classes/procedural_sky_material.hpp>
 #include <godot_cpp/variant/color.hpp>
 
 #include "Native/Chunks/ChunkProcessor.hpp"
@@ -17,9 +21,11 @@ namespace SWBF2
     {
         set_name("Level");
 
-        Native::SWBF2::LoadLevelWithGamemode("yav/yav1", "ctf");
+        if (!Native::SWBF2::LoadLevelWithGamemode("cor/cor1", "ctf"))
+            throw std::runtime_error{ "failed to load the game level" };
 
         LoadLevelInstances();
+        LoadSkybox();
     }
 
     godot::MeshInstance3D *Level::LoadModel(const std::string &id)
@@ -131,6 +137,27 @@ namespace SWBF2
                 mesh->set_unique_name_in_owner(true);
             }
         }
+    }
+
+    void Level::LoadSkybox()
+    {
+        godot::WorldEnvironment *worldEnv = memnew(godot::WorldEnvironment);
+        godot::Environment *env = memnew(godot::Environment);
+        godot::Sky *sky = memnew(godot::Sky);
+
+        auto &texture = Native::SWBF2::m_tex[Native::SWBF2::m_skyDome.m_texture].m_formats[0].m_faceLevels[0].m_gdTexture;
+        godot::ProceduralSkyMaterial *procSkyMaterial = memnew(godot::ProceduralSkyMaterial);
+        procSkyMaterial->set_sky_cover(texture);
+
+        sky->set_material(procSkyMaterial);
+
+        env->set_background(godot::Environment::BG_SKY);
+        env->set_sky(sky);
+        worldEnv->set_environment(env);
+
+        add_child(worldEnv);
+
+        worldEnv->set_owner(this->get_parent());
     }
 
     void Level::_process(double delta_time)

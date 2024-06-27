@@ -34,6 +34,47 @@ namespace SWBF2::Native
             return reader;
         }
 
+        template <uint32_t header>
+        bool IsNextHeader()
+        {
+            std::size_t prevhead = m_head;
+
+            auto reader = ReadChild();
+
+            m_head = prevhead;
+            if (!reader)
+                return false;
+
+            if (reader->GetHeader().m_Magic != header)
+                return false;
+
+            return true;
+        }
+
+        template <uint32_t header1, uint32_t header2>
+        bool IsNextHeader2()
+        {
+            std::size_t prevhead = m_head;
+
+            auto reader1 = ReadChild();
+            if (!reader1 || reader1->GetHeader().m_Magic != header1)
+            {
+                m_head = prevhead;
+                return false;
+            }
+
+            auto reader2 = ReadChild();
+            if (!reader2 || reader2->GetHeader().m_Magic != header2)
+            {
+                m_head = prevhead;
+                return false;
+            }
+
+            m_head = prevhead;
+
+            return true;
+        }
+
         bool SkipBytes(uint32_t bytes);
         const ChunkHeader &GetHeader() const;
         std::size_t GetHead();

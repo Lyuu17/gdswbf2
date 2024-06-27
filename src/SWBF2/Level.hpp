@@ -22,6 +22,7 @@ namespace SWBF2
 
         godot::MeshInstance3D *LoadModel(const std::string &id);
         void LoadLevelInstances();
+        void LoadSkybox();
 
         void _process(double delta_time) override;
 

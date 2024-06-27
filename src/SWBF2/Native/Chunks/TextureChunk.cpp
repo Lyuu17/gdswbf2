@@ -89,13 +89,11 @@ namespace SWBF2::Native
             *bodyReaderChild >> lvl.m_imageInBytes;
         }
 
-        if (TextureUtils::IsD3DFormatSupported(fmt.m_format))
+        //if (TextureUtils::IsD3DFormatSupported(fmt.m_format))
         {
-            godot::PackedByteArray imageBuf;
-            imageBuf.resize(lvl.m_bodySize);
-            std::copy(lvl.m_imageInBytes.begin(), lvl.m_imageInBytes.end(), (std::byte *)imageBuf.ptrw());
+            auto [format, imageBuf] = TextureUtils::godotTextureConvert(fmt.m_width, fmt.m_height, fmt.m_format, lvl.m_imageInBytes);
 
-            godot::Ref<godot::Image> image{ godot::Image::create_from_data(fmt.m_width, fmt.m_height, false, TextureUtils::D3DToGLFormat(fmt.m_format), imageBuf) };
+            godot::Ref<godot::Image> image{ godot::Image::create_from_data(fmt.m_width, fmt.m_height, false, format, imageBuf) };
             godot::Ref<godot::ImageTexture> imageTex{ godot::ImageTexture::create_from_image(image) };
 
             lvl.m_gdTexture = imageTex;

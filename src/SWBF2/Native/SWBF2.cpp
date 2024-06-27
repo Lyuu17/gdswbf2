@@ -5,6 +5,8 @@
 
 namespace SWBF2::Native
 {
+    SkyDome SWBF2::m_skyDome;
+
     std::string SWBF2::m_curLevel;
 
     std::unordered_map<std::string, Level> SWBF2::m_levels;
@@ -13,11 +15,13 @@ namespace SWBF2::Native
     std::unordered_map<std::string, Texture> SWBF2::m_tex;
     std::unordered_map<std::string, SWBF2::LoclEntriesMap> SWBF2::m_locl;
 
-    void SWBF2::LoadLevelWithGamemode(const std::string &lvlfile, const std::string &lvl)
+    bool SWBF2::LoadLevelWithGamemode(const std::string &lvlfile, const std::string &lvl)
     {
-        UcfbChunk::ReadUcfbFile(std::format("data/_lvl_pc/{}.lvl", lvlfile));
+        bool ret = UcfbChunk::ReadUcfbFile(std::format("data/_lvl_pc/{}.lvl", lvlfile));
 
         m_curLevel = lvl;
+
+        return ret;
     }
 
     const Level &SWBF2::GetLevel()

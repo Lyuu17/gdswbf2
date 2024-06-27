@@ -11,13 +11,13 @@
 
 namespace SWBF2::Native
 {
-    void UcfbChunk::ReadUcfbFile(const std::string &filename)
+    bool UcfbChunk::ReadUcfbFile(const std::string &filename)
     {
         std::ifstream is{ filename,std::ios::binary | std::ios::ate };
         if (!is.is_open())
         {
             godot::UtilityFunctions::printerr(__FILE__, ":", __LINE__, ": failed open ", filename.c_str(), " file");
-            return;
+            return false;
         }
 
         auto size = is.tellg();
@@ -34,6 +34,8 @@ namespace SWBF2::Native
         ProcessChunk(streamReader);
 
         godot::UtilityFunctions::print(__FILE__, ":", __LINE__, ": Finished reading ", bytes.size(), " bytes of ", filename.c_str(), " file");
+
+        return true;
     }
 
     void UcfbChunk::ProcessChunk(StreamReader &streamReader)

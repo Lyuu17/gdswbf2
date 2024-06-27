@@ -11,6 +11,7 @@
 #include "LoclChunk.hpp"
 #include "TextureChunk.hpp"
 #include "LevelChunk.hpp"
+#include "SkyChunk.hpp"
 
 namespace SWBF2::Native
 {
@@ -25,7 +26,8 @@ namespace SWBF2::Native
             { "modl"_m, ModelChunk::ProcessChunk },
             { "Locl"_m, LoclChunk::ProcessChunk },
             { "tex_"_m, TextureChunk::ProcessChunk },
-            { "lvl_"_m, LevelChunk::ProcessChunk }
+            { "lvl_"_m, LevelChunk::ProcessChunk },
+            { "sky_"_m, SkyChunk::ProcessChunk }
         };
 
         static void ProcessChunk(StreamReader &streamReader, StreamReader &parentReader);

@@ -4,6 +4,7 @@
 #include "Native/Chunks/LevelChunk.hpp"
 #include "Native/Chunks/WorldChunk.hpp"
 
+#include "Native/Hashes.hpp"
 #include "Native/SWBF2.hpp"
 
 namespace SWBF2::Native
@@ -12,7 +13,11 @@ namespace SWBF2::Native
     {
         Level lvl{};
 
-        streamReader.SkipBytes(sizeof(uint32_t)); // hash?
+        uint32_t hash;
+        streamReader >> hash;
+
+        // std::string lvlName{ GameHashes.at(hash) };
+
         streamReader.SkipBytes(sizeof(uint32_t)); // lvl_ size left
 
         std::optional<StreamReader> readerChild;
@@ -36,13 +41,10 @@ namespace SWBF2::Native
             }
         }
 
-        const auto gamemodes = { "ctf", "conquest", "centerflag", "campaign", "tdm" };
-        for (const auto &[id, world] : lvl.m_worlds)
-        {
-            std::string type = id.substr(id.find_first_of('_') + 1);
+        /*const auto gamemodes = {"ctf", "conquest", "centerflag", "campaign", "tdm"};
+        std::string type = lvlName.substr(lvlName.find_first_of('_') + 1);
 
-            if (std::find(gamemodes.begin(), gamemodes.end(), type) != gamemodes.end())
-                SWBF2::m_levels.insert_or_assign(type, lvl);
-        }
+        if (std::find(gamemodes.begin(), gamemodes.end(), type) != gamemodes.end())
+            SWBF2::m_levels.insert_or_assign(type, lvl);*/
     }
 }

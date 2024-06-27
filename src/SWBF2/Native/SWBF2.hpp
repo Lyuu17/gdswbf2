@@ -4,11 +4,14 @@
 #include "Native/Models/Model.hpp"
 #include "Native/Texture/Texture.hpp"
 #include "Native/Level.hpp"
+#include "Native/SkyDome.hpp"
 
 namespace SWBF2::Native
 {
     class SWBF2 {
     public:
+        static SkyDome m_skyDome;
+
         static std::string m_curLevel;
 
         static std::unordered_map<std::string, Level> m_levels;
@@ -20,7 +23,7 @@ namespace SWBF2::Native
         using LoclEntriesMap = std::unordered_map<FNVHash, std::u16string>;
         static std::unordered_map<std::string, LoclEntriesMap> m_locl;
 
-        static void LoadLevelWithGamemode(const std::string &lvlfile, const std::string &gamemode);
+        static bool LoadLevelWithGamemode(const std::string &lvlfile, const std::string &gamemode);
         static const Level &GetLevel();
     };
 }
