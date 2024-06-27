@@ -74,6 +74,8 @@ namespace SWBF2::Native
 
         if (data.count > 0)
             ReadDataElements(streamReader, parentConfigNode.createNode(data.tag), data.count);
+        else
+            parentConfigNode.createNode(data.tag);
     }
 
     void ConfigReader::ReadDataElements(StreamReader &streamReader, ConfigNode &parentConfigNode, uint8_t count)
