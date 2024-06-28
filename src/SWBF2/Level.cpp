@@ -46,35 +46,15 @@ namespace SWBF2
         godot::ArrayMesh *arrMesh = memnew(godot::ArrayMesh);
         for (auto const &segment : model.m_segments)
         {
-            godot::PackedVector3Array vertices;
-            vertices.resize(segment.m_verticesBuf.m_positions.size());
-            std::copy(segment.m_verticesBuf.m_positions.begin(), segment.m_verticesBuf.m_positions.end(), reinterpret_cast<Vector3<float>*>(vertices.ptrw()));
-
-            godot::PackedVector3Array normals;
-            normals.resize(segment.m_verticesBuf.m_normals.size());
-            std::copy(segment.m_verticesBuf.m_normals.begin(), segment.m_verticesBuf.m_normals.end(), reinterpret_cast<Vector3<float>*>(normals.ptrw()));
-
-            godot::PackedColorArray colors;
-            colors.resize(segment.m_verticesBuf.m_colors.size());
-            std::copy(segment.m_verticesBuf.m_colors.begin(), segment.m_verticesBuf.m_colors.end(), colors.ptrw());
-
-            godot::PackedVector2Array uvs;
-            uvs.resize(segment.m_verticesBuf.m_texCoords.size());
-            std::copy(segment.m_verticesBuf.m_texCoords.begin(), segment.m_verticesBuf.m_texCoords.end(), reinterpret_cast<Vector2<float>*>(uvs.ptrw()));
-
-            godot::PackedInt32Array indices;
-            indices.resize(segment.m_indicesBuf.m_indices.size());
-            std::copy(segment.m_indicesBuf.m_indices.begin(), segment.m_indicesBuf.m_indices.end(), indices.ptrw());
-
             godot::Array arrays;
             arrays.resize(godot::ArrayMesh::ARRAY_MAX);
-            arrays[godot::ArrayMesh::ARRAY_VERTEX] = vertices;
-            arrays[godot::ArrayMesh::ARRAY_NORMAL] = normals;
+            arrays[godot::ArrayMesh::ARRAY_VERTEX] = segment.m_verticesBuf.m_positions;
+            arrays[godot::ArrayMesh::ARRAY_NORMAL] = segment.m_verticesBuf.m_normals;
             //arrays[godot::ArrayMesh::ARRAY_TANGENT] = tangents;
-            if (colors.size() > 0)
-                arrays[godot::ArrayMesh::ARRAY_COLOR] = colors;
-            arrays[godot::ArrayMesh::ARRAY_TEX_UV] = uvs;
-            arrays[godot::ArrayMesh::ARRAY_INDEX] = indices;
+            if (segment.m_verticesBuf.m_colors.size() > 0)
+                arrays[godot::ArrayMesh::ARRAY_COLOR] = segment.m_verticesBuf.m_colors;
+            arrays[godot::ArrayMesh::ARRAY_TEX_UV] = segment.m_verticesBuf.m_texCoords;
+            arrays[godot::ArrayMesh::ARRAY_INDEX] = segment.m_indicesBuf.m_indices;
 
             arrMesh->add_surface_from_arrays(Native::ModelUtils::DXtoGLPrimitiveType(segment.m_primitiveType), arrays);
 

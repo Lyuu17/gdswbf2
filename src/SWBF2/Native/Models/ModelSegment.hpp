@@ -41,7 +41,7 @@ namespace SWBF2::Native
     typedef struct _INDICES_BUF
     {
         uint32_t m_indicesCount;
-        std::vector<uint16_t> m_indices;
+        godot::PackedInt32Array m_indices;
     } IndicesBuf;
 
     typedef struct _VERTICES_BUF
@@ -50,16 +50,16 @@ namespace SWBF2::Native
         uint32_t m_stride; // bytes per vertex
         VBUFFlags m_flags;
 
-        std::vector<Vector3<float>> m_positions;
-        std::vector<Vector3<float>> m_normals;
-        std::vector<Vector3<float>> m_tangents;
-        std::vector<Vector3<float>> m_biTangents;
+        godot::PackedVector3Array m_positions;
+        godot::PackedVector3Array m_normals;
+        godot::PackedVector3Array m_tangents;
+        godot::PackedVector3Array m_biTangents;
 
-        std::vector<godot::Color> m_colors;
-        std::vector<Vector2<float>> m_texCoords;
+        godot::PackedColorArray m_colors;
+        godot::PackedVector2Array m_texCoords;
 
-        std::vector<Vector3<uint8_t>> m_boneIndices;
-        std::vector<Vector3<float>> m_weights;
+        godot::PackedVector3Array m_boneIndices;
+        godot::PackedVector3Array m_weights;
     } VerticesBuf;
 
     class ModelSegment {

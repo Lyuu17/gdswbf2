@@ -12,8 +12,8 @@ namespace SWBF2::Native
     typedef struct _MODEL_INFO
     {
         uint32_t m_unknown[4];
-        Vector3<float> m_vertexBox[2];
-        Vector3<float> m_visibilityBox[2];
+        godot::Vector3 m_vertexBox[2];
+        godot::Vector3 m_visibilityBox[2];
         uint32_t m_faceCount;
     } ModelInfo;
 

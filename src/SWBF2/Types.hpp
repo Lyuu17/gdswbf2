@@ -14,9 +14,6 @@
 #include <map>
 #include <format>
 
-#include "Vector2.hpp"
-#include "Vector3.hpp"
-#include "RGBA.hpp"
 #include "FNVHash.hpp"
 #include "Utils.hpp"
 
