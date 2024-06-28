@@ -13,6 +13,7 @@
 #include <array>
 #include <map>
 #include <format>
+#include <memory>
 
 #include "FNVHash.hpp"
 #include "Utils.hpp"
