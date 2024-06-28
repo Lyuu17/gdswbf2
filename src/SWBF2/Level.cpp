@@ -152,11 +152,16 @@ namespace SWBF2
             {
                 godot::Sky *sky = memnew(godot::Sky);
                 {
-                    auto &texture = Native::SWBF2::m_tex[Native::SWBF2::m_skyDome.m_texture].m_formats[0].m_faceLevels[0].m_gdTexture;
-                    godot::ProceduralSkyMaterial *procSkyMaterial = memnew(godot::ProceduralSkyMaterial);
-                    procSkyMaterial->set_sky_cover(texture);
+                    const auto &textureName = Native::SWBF2::m_skyDome.m_texture;
 
-                    sky->set_material(procSkyMaterial);
+                    if (Native::SWBF2::m_tex.contains(textureName))
+                    {
+                        auto &texture = Native::SWBF2::m_tex[textureName].m_formats[0].m_faceLevels[0].m_gdTexture;
+                        godot::ProceduralSkyMaterial *procSkyMaterial = memnew(godot::ProceduralSkyMaterial);
+                        procSkyMaterial->set_sky_cover(texture);
+
+                        sky->set_material(procSkyMaterial);
+                    }
                 }
 
                 env->set_background(godot::Environment::BG_SKY);
