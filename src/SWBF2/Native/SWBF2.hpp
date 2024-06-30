@@ -3,6 +3,7 @@
 
 #include "Native/Models/Model.hpp"
 #include "Native/Texture/Texture.hpp"
+#include "Native/Objects/ObjectDefinition.hpp"
 #include "Native/Level.hpp"
 #include "Native/SkyDome.hpp"
 #include "Native/Light.hpp"
@@ -38,6 +39,7 @@ namespace SWBF2::Native
         static std::unordered_map<std::string, Light> m_lights;
         static std::unordered_map<std::string, Model> m_models;
         static std::unordered_map<std::string, Texture> m_tex;
+        static std::unordered_map<std::string, ObjectDefinition> m_objectDefs;
 
         using LoclEntriesMap = std::unordered_map<FNVHash, std::u16string>;
         static std::unordered_map<std::string, LoclEntriesMap> m_locl;

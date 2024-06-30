@@ -11,6 +11,6 @@ namespace SWBF2::Native
         godot::Basis m_rotationMatrix;
         godot::Vector3 m_position;
 
-        std::unordered_map<uint32_t, std::string> m_properties;
+        std::unordered_map<FNVHash, std::string> m_properties;
     };
 }

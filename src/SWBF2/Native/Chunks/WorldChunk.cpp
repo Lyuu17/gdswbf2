@@ -2,7 +2,7 @@
 
 #include "Native/Chunks/StreamReader.hpp"
 #include "Native/Chunks/WorldChunk.hpp"
-#include "Native/GameObject.hpp"
+#include "Native/Objects/GameObject.hpp"
 #include "Native/SWBF2.hpp"
 
 namespace SWBF2::Native

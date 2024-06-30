@@ -1,7 +1,7 @@
 
 #pragma once
 
-#include "GameObject.hpp"
+#include "Native/Objects/GameObject.hpp"
 
 namespace SWBF2::Native
 {

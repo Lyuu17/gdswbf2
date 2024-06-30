@@ -15,6 +15,7 @@ namespace SWBF2::Native
     std::unordered_map<std::string, Light> SWBF2::m_lights;
     std::unordered_map<std::string, Model> SWBF2::m_models;
     std::unordered_map<std::string, Texture> SWBF2::m_tex;
+    std::unordered_map<std::string, ObjectDefinition> SWBF2::m_objectDefs;
     std::unordered_map<std::string, SWBF2::LoclEntriesMap> SWBF2::m_locl;
 
     void SWBF2::Init()

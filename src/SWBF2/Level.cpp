@@ -27,15 +27,23 @@ namespace SWBF2
 
     godot::MeshInstance3D *Level::LoadModel(const std::string &id)
     {
-        if (!Native::SWBF2::m_models.contains(id))
+        if (!Native::SWBF2::m_models.contains(id) && !Native::SWBF2::m_objectDefs.contains(id))
         {
             return nullptr;
         }
 
-        const auto &model = Native::SWBF2::m_models[id];
+        std::string newId = id;
+        if (Native::SWBF2::m_objectDefs.contains(id))
+        {
+            newId = Native::SWBF2::m_objectDefs[id].m_geometryName;
+            if (newId.empty())
+                return nullptr;
+        }
+
+        const auto &model = Native::SWBF2::m_models[newId];
 
         godot::MeshInstance3D *meshInstance = memnew(godot::MeshInstance3D);
-        meshInstance->set_name(id.c_str());
+        meshInstance->set_name(newId.c_str());
 
         godot::ArrayMesh *arrMesh = memnew(godot::ArrayMesh);
         for (auto const &segment : model.m_segments)
@@ -58,25 +66,28 @@ namespace SWBF2
                 const auto &mainTextureName = segment.m_textureNames[Native::ModelSegment::TEXTURE_DEFAULT];
                 const auto &bumpTextureName = segment.m_textureNames[Native::ModelSegment::TEXTURE_NORMAL];
 
-                auto &material = m_materialPool.getItem(mainTextureName);
-                if (material.is_valid())
+                if (!mainTextureName.empty())
                 {
-                    if (!bumpTextureName.empty() && Native::SWBF2::m_tex.contains(bumpTextureName))
+                    auto &material = m_materialPool.getItem(mainTextureName);
+                    if (material.is_valid())
                     {
-                        auto &bumpTexture = Native::SWBF2::m_tex[bumpTextureName].m_formats[0].m_faceLevels[0].m_gdTexture;
+                        if (!bumpTextureName.empty() && Native::SWBF2::m_tex.contains(bumpTextureName))
+                        {
+                            auto &bumpTexture = Native::SWBF2::m_tex[bumpTextureName].m_formats[0].m_faceLevels[0].m_gdTexture;
 
-                        material->set_feature(godot::BaseMaterial3D::FEATURE_NORMAL_MAPPING, true);
-                        material->set_texture(godot::BaseMaterial3D::TEXTURE_NORMAL, bumpTexture);
+                            material->set_feature(godot::BaseMaterial3D::FEATURE_NORMAL_MAPPING, true);
+                            material->set_texture(godot::BaseMaterial3D::TEXTURE_NORMAL, bumpTexture);
+                        }
+
+                        // TODO: fix leaves transparency?
+                        if (mainTextureName == "leaves")
+                            material->set_transparency(godot::BaseMaterial3D::TRANSPARENCY_ALPHA_SCISSOR);
+
+                        if (segment.m_material.m_flags & Native::Material::MATERIAL_TRANSPARENT)
+                            material->set_transparency(godot::BaseMaterial3D::TRANSPARENCY_ALPHA);
+
+                        arrMesh->surface_set_material(surfaceId, material);
                     }
-
-                    // TODO: fix leaves transparency?
-                    if (mainTextureName == "leaves")
-                        material->set_transparency(godot::BaseMaterial3D::TRANSPARENCY_ALPHA_SCISSOR);
-
-                    if (segment.m_material.m_flags & Native::Material::MATERIAL_TRANSPARENT)
-                        material->set_transparency(godot::BaseMaterial3D::TRANSPARENCY_ALPHA);
-
-                    arrMesh->surface_set_material(surfaceId, material);
                 }
             }
 

@@ -13,6 +13,7 @@
 #include "LevelChunk.hpp"
 #include "SkyChunk.hpp"
 #include "LightChunk.hpp"
+#include "ObjectDefinitionChunk.hpp"
 
 namespace SWBF2::Native
 {
@@ -29,7 +30,8 @@ namespace SWBF2::Native
             { "tex_"_m, TextureChunk::ProcessChunk },
             { "lvl_"_m, LevelChunk::ProcessChunk },
             { "sky_"_m, SkyChunk::ProcessChunk },
-            { "lght"_m, LightChunk::ProcessChunk }
+            { "lght"_m, LightChunk::ProcessChunk },
+            { "entc"_m, ObjectDefinitionChunk::ProcessChunk }
         };
 
         static void ProcessChunk(StreamReader &streamReader, StreamReader &parentReader);
