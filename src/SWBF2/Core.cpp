@@ -1,5 +1,6 @@
 
 #include <godot_cpp/variant/utility_functions.hpp>
+#include <godot_cpp/classes/camera3d.hpp>
 
 #include "Native/Chunks/ChunkProcessor.hpp"
 #include "Native/SWBF2.hpp"
@@ -43,6 +44,11 @@ namespace SWBF2
     {
         godot::ClassDB::bind_method(godot::D_METHOD("get_mapname"), &Core::GetMapName);
         godot::ClassDB::bind_method(godot::D_METHOD("load_level", "mapname"), &Core::LoadLevel);
-        godot::ClassDB::add_property("Core", godot::PropertyInfo(godot::Variant::STRING, "mapname", godot::PROPERTY_HINT_ENUM, "cor1"), "load_level", "get_mapname");
+
+        std::string mapList;
+        for (const auto &[mapId, mapPath] : SWBF2::Native::DefaultGameMaps)
+            mapList = std::format("{},{}", mapList, mapId);
+
+        godot::ClassDB::add_property("Core", godot::PropertyInfo(godot::Variant::STRING, "mapname", godot::PROPERTY_HINT_ENUM, mapList.c_str()), "load_level", "get_mapname");
     }
 }

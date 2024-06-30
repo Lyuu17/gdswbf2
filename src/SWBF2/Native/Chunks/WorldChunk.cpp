@@ -2,7 +2,7 @@
 
 #include "Native/Chunks/StreamReader.hpp"
 #include "Native/Chunks/WorldChunk.hpp"
-#include "Native/Instance.hpp"
+#include "Native/GameObject.hpp"
 #include "Native/SWBF2.hpp"
 
 namespace SWBF2::Native
@@ -55,7 +55,7 @@ namespace SWBF2::Native
 
     void WorldChunk::ProcessInstChunk(StreamReader &streamReader, World &world)
     {
-        Instance inst{};
+        GameObject inst{};
 
         auto infoReaderChild = streamReader.ReadChildWithHeader<"INFO"_m>();
         {
@@ -85,7 +85,7 @@ namespace SWBF2::Native
         std::optional<StreamReader> propReaderChild;
         while ((propReaderChild = streamReader.ReadChildWithHeader<"PROP"_m>()).has_value())
         {
-            uint32_t prop;
+            FNVHash prop;
             *propReaderChild >> prop;
 
             std::string value;

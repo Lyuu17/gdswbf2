@@ -1,7 +1,7 @@
 
 #pragma once
 
-#include "Instance.hpp"
+#include "GameObject.hpp"
 
 namespace SWBF2::Native
 {
@@ -11,6 +11,6 @@ namespace SWBF2::Native
         std::string m_terrainName;
         std::string m_skyName;
 
-        std::vector<Instance> m_instances;
+        std::vector<GameObject> m_instances;
     };
 }

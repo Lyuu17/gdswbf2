@@ -9,10 +9,11 @@
 
 namespace SWBF2::Native
 {
-    const static inline std::unordered_map<std::string_view, std::string_view> GameMaps
+    const static inline std::unordered_map<std::string_view, std::string_view> DefaultGameMaps
     {
         // name, path
-        { "cor1", "cor/cor1" }
+        { "cor1", "cor/cor1" },
+        { "yav1", "yav/yav1" }
     };
 
     enum class LevelGamemode

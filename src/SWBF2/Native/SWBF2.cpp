@@ -44,7 +44,7 @@ namespace SWBF2::Native
     {
         m_curMapName = levelname;
 
-        return UcfbChunk::ReadUcfbFile(std::format("data/_lvl_pc/{}.lvl", GameMaps.at(levelname)));
+        return UcfbChunk::ReadUcfbFile(std::format("data/_lvl_pc/{}.lvl", DefaultGameMaps.at(levelname)));
     }
 
     void SWBF2::LoadGamemode(LevelGamemode gamemode)

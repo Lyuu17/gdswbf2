@@ -66,8 +66,6 @@ namespace SWBF2::Native::TextureUtils
 
         imageBuf.resize(width * height * 2);
 
-        //memset(imageBuf.ptrw(), 0xFF, width * height * 2);
-
         for (uint32_t y = 0; y < height; ++y) {
             for (uint32_t x = 0; x < width; ++x) {
                 uint16_t d3dPixel = reinterpret_cast<uint16_t &>(bytes[y * width + x]);
