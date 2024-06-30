@@ -1,15 +1,12 @@
 
 #include <godot_cpp/variant/utility_functions.hpp>
 
+#include "Native/Chunks/ChunkProcessor.hpp"
+#include "Native/SWBF2.hpp"
+
 #include "Core.hpp"
 #include "Level.hpp"
 #include "Version.h"
-
-#include "Native/Chunks/ChunkProcessor.hpp"
-
-#include <chrono>
-#include <iostream>
-#include <thread>
 
 namespace SWBF2
 {
@@ -22,16 +19,30 @@ namespace SWBF2
         set_name("Core");
 
         godot::UtilityFunctions::print("hello world!");
+    }
 
-        // SWBF2::Native::UcfbChunk::ReadUcfbFile("data/_lvl_pc/common.lvl");
-        // SWBF2::Native::UcfbChunk::ReadUcfbFile("data/_lvl_pc/core.lvl");
+    void Core::LoadLevel(const godot::String &mapName)
+    {
+        m_curMapName = mapName;
+
+        if (mapName.is_empty())
+        {
+            remove_child(find_child("Level", false));
+
+            SWBF2::Native::SWBF2::Reset();
+            return;
+        }
 
         Level *lvl = memnew(Level);
         add_child(lvl);
         lvl->set_owner(this);
+        lvl->LoadLevel(mapName);
     }
 
     void Core::_bind_methods()
     {
+        godot::ClassDB::bind_method(godot::D_METHOD("get_mapname"), &Core::GetMapName);
+        godot::ClassDB::bind_method(godot::D_METHOD("load_level", "mapname"), &Core::LoadLevel);
+        godot::ClassDB::add_property("Core", godot::PropertyInfo(godot::Variant::STRING, "mapname", godot::PROPERTY_HINT_ENUM, "cor1"), "load_level", "get_mapname");
     }
 }

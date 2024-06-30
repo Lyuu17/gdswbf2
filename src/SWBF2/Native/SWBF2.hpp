@@ -9,13 +9,30 @@
 
 namespace SWBF2::Native
 {
+    const static inline std::unordered_map<std::string_view, std::string_view> GameMaps
+    {
+        // name, path
+        { "cor1", "cor/cor1" }
+    };
+
+    enum class LevelGamemode
+    {
+        NONE = 0,
+        CTF,
+        CONQUEST,
+        CENTERFLAG,
+        CAMPAIGN,
+        TDM
+    };
+
     class SWBF2 {
     public:
         static SkyDome m_skyDome;
 
-        static std::string m_curLevel;
+        static std::string m_curMapName;
+        static LevelGamemode m_curLevel;
 
-        static std::unordered_map<std::string, Level> m_levels;
+        static std::unordered_map<LevelGamemode, Level> m_levels;
         static std::unordered_map<std::string, World> m_worlds;
         static std::unordered_map<std::string, Light> m_lights;
         static std::unordered_map<std::string, Model> m_models;
@@ -24,7 +41,10 @@ namespace SWBF2::Native
         using LoclEntriesMap = std::unordered_map<FNVHash, std::u16string>;
         static std::unordered_map<std::string, LoclEntriesMap> m_locl;
 
-        static bool LoadLevelWithGamemode(const std::string &lvlfile, const std::string &gamemode);
+        static void Init();
+        static void Reset();
+        static bool LoadLevelFile(const std::string &levelname);
+        static void LoadGamemode(LevelGamemode gamemode);
         static const Level &GetLevel();
     };
 }

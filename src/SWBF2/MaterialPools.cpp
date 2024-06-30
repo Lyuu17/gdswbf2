@@ -1,6 +1,4 @@
 
-#pragma once
-
 #include "Native/SWBF2.hpp"
 
 #include "MaterialPools.hpp"

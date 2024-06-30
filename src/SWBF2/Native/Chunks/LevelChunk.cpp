@@ -13,10 +13,8 @@ namespace SWBF2::Native
     {
         Level lvl{};
 
-        uint32_t hash;
+        FNVHash hash;
         streamReader >> hash;
-
-        // std::string lvlName{ GameHashes.at(hash) };
 
         streamReader.SkipBytes(sizeof(uint32_t)); // lvl_ size left
 
@@ -41,10 +39,22 @@ namespace SWBF2::Native
             }
         }
 
-        /*const auto gamemodes = {"ctf", "conquest", "centerflag", "campaign", "tdm"};
-        std::string type = lvlName.substr(lvlName.find_first_of('_') + 1);
+        const static std::unordered_map<LevelGamemode, std::string_view> LevelGamemodesStr
+        {
+            { LevelGamemode::CTF, "ctf" },
+            { LevelGamemode::CONQUEST, "conquest" },
+            { LevelGamemode::CENTERFLAG, "centerflag" },
+            { LevelGamemode::CAMPAIGN, "campaign" },
+            { LevelGamemode::TDM, "tdm" }
+        };
 
-        if (std::find(gamemodes.begin(), gamemodes.end(), type) != gamemodes.end())
-            SWBF2::m_levels.insert_or_assign(type, lvl);*/
+        for (const auto &[id, str] : LevelGamemodesStr)
+        {
+            if (FNVGenerateHash(std::format("{}_{}", SWBF2::m_curMapName, str)) == hash)
+            {
+                SWBF2::m_levels.insert_or_assign(id, lvl);
+                break;
+            }
+        }
     }
 }

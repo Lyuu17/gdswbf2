@@ -1,4 +1,5 @@
 
+#include <godot_cpp/classes/class_db_singleton.hpp>
 #include <godot_cpp/classes/array_mesh.hpp>
 #include <godot_cpp/classes/mesh_instance3d.hpp>
 #include <godot_cpp/classes/image_texture.hpp>
@@ -22,13 +23,6 @@ namespace SWBF2
     void Level::_ready()
     {
         set_name("Level");
-
-        if (!Native::SWBF2::LoadLevelWithGamemode("cor/cor1", "ctf"))
-            throw std::runtime_error{ "failed to load the game level" };
-
-        LoadLevelInstances();
-        LoadWorldEnvironment();
-        LoadLights();
     }
 
     godot::MeshInstance3D *Level::LoadModel(const std::string &id)
@@ -173,6 +167,22 @@ namespace SWBF2
 
             directionalLight3D->set_owner(get_parent());
         }
+    }
+
+    void Level::LoadLevel(const godot::String &mapName)
+    {
+        m_curMapName = mapName;
+
+        if (!Native::SWBF2::LoadLevelFile(mapName.ascii().get_data()))
+            throw std::runtime_error{ "failed to load the game level" };
+
+        LoadLevelInstances();
+        LoadWorldEnvironment();
+        LoadLights();
+    }
+
+    void Level::LoadGamemode(const godot::String &gamemode)
+    {
     }
 
     void Level::_process(double delta_time)

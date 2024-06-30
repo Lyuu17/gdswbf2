@@ -1,6 +1,4 @@
 
-#pragma once
-
 #include "Hashes.hpp"
 
 namespace SWBF2::Native
