@@ -14,6 +14,7 @@
 #include "SkyChunk.hpp"
 #include "LightChunk.hpp"
 #include "ObjectDefinitionChunk.hpp"
+#include "TerrainChunk.hpp"
 
 namespace SWBF2::Native
 {
@@ -31,7 +32,8 @@ namespace SWBF2::Native
             { "lvl_"_m, LevelChunk::ProcessChunk },
             { "sky_"_m, SkyChunk::ProcessChunk },
             { "lght"_m, LightChunk::ProcessChunk },
-            { "entc"_m, ObjectDefinitionChunk::ProcessChunk }
+            { "entc"_m, ObjectDefinitionChunk::ProcessChunk },
+            { "tern"_m, TerrainChunk::ProcessChunk }
         };
 
         static void ProcessChunk(StreamReader &streamReader, StreamReader &parentReader);

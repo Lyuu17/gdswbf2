@@ -10,6 +10,8 @@ namespace SWBF2::Native
     std::string SWBF2::m_curMapName;
     LevelGamemode SWBF2::m_curLevel;
 
+    Terrain SWBF2::m_tern;
+
     std::unordered_map<LevelGamemode, Level> SWBF2::m_levels;
     std::unordered_map<std::string, World> SWBF2::m_worlds;
     std::unordered_map<std::string, Light> SWBF2::m_lights;

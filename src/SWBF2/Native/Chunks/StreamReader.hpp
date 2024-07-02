@@ -136,6 +136,8 @@ namespace SWBF2::Native
 
             value = std::string_view(str, len);
 
+            m_head += len + 1;
+
             return *this;
         }
 

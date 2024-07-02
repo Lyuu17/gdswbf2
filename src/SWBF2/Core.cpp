@@ -7,6 +7,7 @@
 
 #include "Core.hpp"
 #include "Level.hpp"
+#include "Terrain.hpp"
 #include "Version.h"
 
 namespace SWBF2
@@ -29,6 +30,7 @@ namespace SWBF2
         if (mapName.is_empty())
         {
             remove_child(find_child("Level", false));
+            remove_child(find_child("Terrain", false));
 
             SWBF2::Native::SWBF2::Reset();
             return;
@@ -38,6 +40,11 @@ namespace SWBF2
         add_child(lvl);
         lvl->set_owner(this);
         lvl->LoadLevel(mapName);
+
+        Terrain *terr = memnew(Terrain);
+        add_child(terr);
+        terr->set_owner(this);
+        terr->LoadTerrain();
     }
 
     void Core::_bind_methods()

@@ -7,6 +7,7 @@
 #include "Native/Level.hpp"
 #include "Native/SkyDome.hpp"
 #include "Native/Light.hpp"
+#include "Native/Terrain.hpp"
 
 namespace SWBF2::Native
 {
@@ -33,6 +34,8 @@ namespace SWBF2::Native
 
         static std::string m_curMapName;
         static LevelGamemode m_curLevel;
+
+        static Terrain m_tern;
 
         static std::unordered_map<LevelGamemode, Level> m_levels;
         static std::unordered_map<std::string, World> m_worlds;
