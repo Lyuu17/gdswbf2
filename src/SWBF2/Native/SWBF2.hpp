@@ -46,12 +46,39 @@ namespace SWBF2::Native
 
     class SWBF2 {
     public:
+        enum TeamClassType : uint8_t
+        {
+            SOLDIER,
+            ASSAULT,
+            ENGINEER,
+            SNIPER,
+            OFFICIAL,
+            SPECIAL
+        };
+
+        struct TeamClass
+        {
+            std::string model;
+            uint8_t min;
+            uint8_t max;
+        };
+
+        struct Team
+        {
+            uint8_t team;
+            uint8_t units;
+            uint8_t reinforcements;
+            std::unordered_map<TeamClassType, TeamClass> m_classes;
+        };
+
         static SkyDome m_skyDome;
 
         static std::string m_curMapName;
         static LevelGamemode m_curLevel;
 
         static Terrain m_tern;
+
+        static std::unordered_map<uint8_t, Team> m_teams;
 
         static std::unordered_map<LevelGamemode, Level> m_levels;
         static std::unordered_map<std::string, World> m_worlds;
