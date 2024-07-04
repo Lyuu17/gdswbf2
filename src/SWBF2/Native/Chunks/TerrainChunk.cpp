@@ -26,6 +26,7 @@ namespace SWBF2::Native
             return; // No terrain
 
         auto infoReaderChild = streamReader.ReadChildWithHeader<"INFO"_m>();
+        if (infoReaderChild)
         {
             *infoReaderChild >> tern.m_gridUnitSize;
             *infoReaderChild >> tern.m_heightScale;
@@ -40,6 +41,7 @@ namespace SWBF2::Native
         }
 
         auto ltexChild = streamReader.ReadChildWithHeader<"LTEX"_m>();
+        if (ltexChild)
         {
             for (int i = 0; i < tern.m_textureCount; i++)
             {
@@ -51,17 +53,20 @@ namespace SWBF2::Native
         }
 
         auto dtexReaderChild = streamReader.ReadChildWithHeader<"DTEX"_m>();
+        if (dtexReaderChild)
         {
             // unused?
             dtexReaderChild->SkipBytes((uint32_t)dtexReaderChild->RemainingBytes());
         }
 
         auto dtlxReaderChild = streamReader.ReadChildWithHeader<"DTLX"_m>();
+        if (dtlxReaderChild)
         {
             *dtlxReaderChild >> tern.m_detailTexture;
         }
 
         auto scalChild = streamReader.ReadChildWithHeader<"SCAL"_m>();
+        if (scalChild)
         {
             for (int i = 0; i < tern.m_textureCount; i++)
             {
@@ -73,6 +78,7 @@ namespace SWBF2::Native
         }
 
         auto axisChild = streamReader.ReadChildWithHeader<"AXIS"_m>();
+        if (axisChild)
         {
             for (int i = 0; i < tern.m_textureCount; i++)
             {
@@ -84,6 +90,7 @@ namespace SWBF2::Native
         }
 
         auto rotnChild = streamReader.ReadChildWithHeader<"ROTN"_m>();
+        if (rotnChild)
         {
             for (int i = 0; i < tern.m_textureCount; i++)
             {
