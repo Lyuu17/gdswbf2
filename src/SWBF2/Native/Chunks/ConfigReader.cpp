@@ -49,9 +49,18 @@ namespace SWBF2::Native
                 *dataReaderChild >> node.m_string;
             }
 
-            auto scopReaderChild = streamReader.ReadChildWithHeader<"SCOP"_m>();
+            if (streamReader.IsNextHeader<"SCOP"_m>())
             {
+                auto scopReaderChild = streamReader.ReadChildWithHeader<"SCOP"_m>();
                 ReadDataScop(*scopReaderChild, node);
+            }
+            else if (streamReader.IsNextHeader<"DATA"_m>())
+            {
+                ReadDataScop(streamReader, node);
+            }
+            else
+            {
+                throw std::runtime_error{ "unexpected header" };
             }
         }
     }
