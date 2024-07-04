@@ -8,6 +8,7 @@
 #include <godot_cpp/classes/world_environment.hpp>
 #include <godot_cpp/classes/sky.hpp>
 #include <godot_cpp/classes/procedural_sky_material.hpp>
+#include <godot_cpp/classes/panorama_sky_material.hpp>
 #include <godot_cpp/classes/directional_light3d.hpp>
 #include <godot_cpp/variant/color.hpp>
 
@@ -138,14 +139,14 @@ namespace SWBF2
                 godot::Sky *sky = memnew(godot::Sky);
                 {
                     const auto &textureName = Native::SWBF2::m_skyDome.m_texture;
-
                     if (Native::SWBF2::m_tex.contains(textureName))
                     {
-                        auto &texture = Native::SWBF2::m_tex[textureName].m_formats[0].m_faceLevels[0].m_gdTexture;
-                        godot::ProceduralSkyMaterial *procSkyMaterial = memnew(godot::ProceduralSkyMaterial);
-                        procSkyMaterial->set_sky_cover(texture);
+                        godot::PanoramaSkyMaterial *panoramaSkyMat = memnew(godot::PanoramaSkyMaterial);
 
-                        sky->set_material(procSkyMaterial);
+                        auto &texture = Native::SWBF2::m_tex[textureName].m_formats[0].m_faceLevels[0].m_gdTexture;
+                        panoramaSkyMat->set_panorama(texture);
+
+                        sky->set_material(panoramaSkyMat);
                     }
                 }
 
