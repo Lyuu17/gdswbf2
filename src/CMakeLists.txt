@@ -9,7 +9,6 @@ target_sources(${PROJECT_NAME}
         "SWBF2/Native/Chunks/LightChunk.cpp"
         "SWBF2/Native/Chunks/LoclChunk.cpp"
         "SWBF2/Native/Chunks/ModelChunk.cpp"
-        "SWBF2/Native/Chunks/ModelSegmentChunk.cpp"
         "SWBF2/Native/Chunks/ObjectDefinitionChunk.cpp"
         "SWBF2/Native/Chunks/SkyChunk.cpp"
         "SWBF2/Native/Chunks/StreamReader.cpp"

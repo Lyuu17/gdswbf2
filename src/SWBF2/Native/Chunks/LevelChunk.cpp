@@ -3,6 +3,7 @@
 #include "Native/Chunks/StreamReader.hpp"
 #include "Native/Chunks/LevelChunk.hpp"
 #include "Native/Chunks/WorldChunk.hpp"
+#include "Native/Chunks/ModelChunk.hpp"
 
 #include "Native/Hashes.hpp"
 #include "Native/SWBF2.hpp"
@@ -31,6 +32,17 @@ namespace SWBF2::Native
                     WorldChunk::ProcessWorldChunk(r, world);
 
                     lvl.m_worlds.insert_or_assign(world.m_worldName, world);
+                    break;
+                }
+                case "modl"_m:
+                {
+                    Model mdl{};
+
+                    StreamReader r{ *readerChild };
+                    ModelChunk::ProcessChunkOut(r, mdl);
+
+                    lvl.m_models.insert_or_assign(mdl.m_name, mdl);
+
                     break;
                 }
                 default:
