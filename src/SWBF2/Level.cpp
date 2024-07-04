@@ -181,6 +181,26 @@ namespace SWBF2
         }
     }
 
+    void Level::LoadSkyDome()
+    {
+        for (const auto &domeModel : Native::SWBF2::m_skyDome.m_domeModels)
+        {
+            godot::MeshInstance3D *mesh = LoadModel(domeModel.m_geometry);
+            if (!mesh)
+            {
+                godot::UtilityFunctions::printerr(__FILE__, ":", __LINE__, ": Missing mesh for dome model ", domeModel.m_geometry.c_str());
+                continue;
+            }
+
+            mesh->set_name(domeModel.m_geometry.c_str());
+            mesh->set_scale({ 1000, 1000, 1000 });
+
+            add_child(mesh);
+
+            mesh->set_owner(this->get_parent());
+        }
+    }
+
     void Level::LoadLevel(const godot::String &mapName)
     {
         m_curMapName = mapName;
@@ -191,6 +211,7 @@ namespace SWBF2
         LoadLevelInstances();
         LoadWorldEnvironment();
         LoadLights();
+        LoadSkyDome();
     }
 
     void Level::LoadGamemode(const godot::String &gamemode)

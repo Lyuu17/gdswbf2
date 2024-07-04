@@ -28,6 +28,7 @@ namespace SWBF2
         void LoadLevelInstances();
         void LoadWorldEnvironment();
         void LoadLights();
+        void LoadSkyDome();
 
     public:
         const godot::String &GetMapName() { return m_curMapName; };

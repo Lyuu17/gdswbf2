@@ -8,8 +8,15 @@
 
 namespace SWBF2::Native
 {
+    struct DomeModel
+    {
+        std::string m_geometry;
+    };
+
     class SkyDome {
     public:
         std::string m_texture;
+
+        std::vector<DomeModel> m_domeModels;
     };
 }

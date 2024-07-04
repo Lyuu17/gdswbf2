@@ -22,6 +22,27 @@ namespace SWBF2::Native
                         SWBF2::m_skyDome.m_texture = val->m_string;
                         break;
                     }
+
+                    case "DomeModel"_fnv:
+                    {
+                        ProcessDomeModels(val);
+                        break;
+                    }
+                }
+            }
+        }
+    }
+
+    void SkyChunk::ProcessDomeModels(const std::unique_ptr<ConfigNode> &node)
+    {
+        for (const auto &[attr, val] : node->getNodes())
+        {
+            switch (attr)
+            {
+                case "Geometry"_fnv:
+                {
+                    SWBF2::m_skyDome.m_domeModels.push_back({ val->m_string });
+                    break;
                 }
             }
         }

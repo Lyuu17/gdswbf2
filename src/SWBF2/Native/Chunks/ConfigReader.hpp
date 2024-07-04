@@ -8,6 +8,7 @@ namespace SWBF2::Native
 {
     enum class ConfigDataType
     {
+        NONE = 0,
         FLOAT,
         STRING,
         FLOAT_VECTOR
