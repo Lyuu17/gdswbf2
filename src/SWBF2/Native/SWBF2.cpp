@@ -5,6 +5,8 @@
 
 namespace SWBF2::Native
 {
+    lua_State *SWBF2::m_luaState;
+
     SkyDome SWBF2::m_skyDome;
 
     std::string SWBF2::m_curMapName;
@@ -27,6 +29,8 @@ namespace SWBF2::Native
 
         if (!UcfbChunk::ReadUcfbFile("data/_lvl_pc/common.lvl"))
             throw std::runtime_error{ "failed to load common.lvl from game directory" };
+
+        m_luaState = lua_open();
     }
 
     void SWBF2::Reset()
@@ -41,6 +45,8 @@ namespace SWBF2::Native
         m_models.clear();
         m_tex.clear();
         m_locl.clear();
+
+        lua_close(m_luaState);
     }
 
     bool SWBF2::LoadLevelFile(const std::string &levelname)

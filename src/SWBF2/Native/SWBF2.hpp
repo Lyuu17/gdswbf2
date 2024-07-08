@@ -1,6 +1,8 @@
 
 #pragma once
 
+#include <lua.h>
+
 #include "Native/Models/Model.hpp"
 #include "Native/Texture/Texture.hpp"
 #include "Native/Objects/ObjectDefinition.hpp"
@@ -70,6 +72,8 @@ namespace SWBF2::Native
             uint8_t reinforcements;
             std::unordered_map<TeamClassType, TeamClass> m_classes;
         };
+
+        static lua_State *m_luaState;
 
         static SkyDome m_skyDome;
 

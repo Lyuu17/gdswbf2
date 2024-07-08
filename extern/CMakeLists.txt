@@ -8,3 +8,6 @@ set_target_properties(godot-cpp
     PROPERTIES
         CXX_VISIBILITY_PRESET hidden    # visibility needs to be the same as the main library
 )
+
+# lua
+add_subdirectory(lua)

@@ -17,6 +17,8 @@ target_sources(${PROJECT_NAME}
         "SWBF2/Native/Chunks/UcfbChunk.cpp"
         "SWBF2/Native/Chunks/WorldChunk.cpp"
         "SWBF2/Native/Models/Model.cpp"
+        "SWBF2/Native/Scripting/Lua/LuaCallbacks.cpp"
+        "SWBF2/Native/Scripting/Lua/ScriptCB.cpp"
         "SWBF2/Native/Texture/Texture.cpp"
         "SWBF2/Native/Texture/TextureUtils.cpp"
         "SWBF2/Native/Hashes.cpp"
