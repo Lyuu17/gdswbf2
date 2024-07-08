@@ -9,7 +9,6 @@
 #include <godot_cpp/classes/sky.hpp>
 #include <godot_cpp/classes/procedural_sky_material.hpp>
 #include <godot_cpp/classes/panorama_sky_material.hpp>
-#include <godot_cpp/classes/directional_light3d.hpp>
 #include <godot_cpp/variant/color.hpp>
 
 #include "Native/Chunks/ChunkProcessor.hpp"
@@ -19,6 +18,7 @@
 #include "Core.hpp"
 #include "Terrain.hpp"
 #include "SkyDome.hpp"
+#include "Lights.hpp"
 
 #include "Level.hpp"
 
@@ -43,6 +43,10 @@ namespace SWBF2
         SkyDome *skyDome = memnew(SkyDome);
         add_child(skyDome);
         skyDome->set_owner(this);
+
+        Lights *lights = memnew(Lights);
+        add_child(lights);
+        lights->set_owner(this);
     }
 
     godot::MeshInstance3D *Level::LoadModel(const std::string &id)
@@ -181,32 +185,12 @@ namespace SWBF2
         worldEnv->set_owner(this->get_parent());
     }
 
-    void Level::LoadLights()
-    {
-        for (const auto &[id, light] : Core::Instance()->m_lights)
-        {
-            godot::DirectionalLight3D *directionalLight3D = memnew(godot::DirectionalLight3D);
-            directionalLight3D->set_name(light.m_name.c_str());
-            directionalLight3D->set_position(light.m_position);
-            directionalLight3D->set_rotation(light.m_rotation.get_euler());
-            directionalLight3D->set_color(light.m_color);
-            directionalLight3D->set_shadow(light.m_castShadow);
-            directionalLight3D->set_param(godot::Light3D::PARAM_SPECULAR, light.m_castSpecular);
-            directionalLight3D->set_param(godot::Light3D::PARAM_RANGE, light.m_range);
-
-            add_child(directionalLight3D);
-
-            directionalLight3D->set_owner(get_parent());
-        }
-    }
-
     void Level::LoadLevel(const godot::String &mapName)
     {
         m_curMapName = mapName;
 
         LoadLevelInstances();
         LoadWorldEnvironment();
-        LoadLights();
     }
 
     void Level::LoadGamemode(const godot::String &gamemode)
