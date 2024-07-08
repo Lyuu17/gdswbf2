@@ -4,7 +4,7 @@
 #include "Native/Chunks/TerrainChunk.hpp"
 #include "Native/Terrain.hpp"
 
-#include "Core.hpp"
+#include "GameData.hpp"
 
 namespace SWBF2::Native
 {
@@ -14,7 +14,7 @@ namespace SWBF2::Native
         TEXTURE_EXTRA = 130
     };
 
-    void TerrainChunk::ProcessChunk(StreamReader &streamReader)
+    void TerrainChunk::ProcessChunk(const std::string &filename, StreamReader &streamReader)
     {
         Terrain tern{};
 
@@ -119,7 +119,7 @@ namespace SWBF2::Native
             }
         }
 
-        Core::Instance()->m_tern = tern;
+        GameData::Instance()->m_tern = tern;
     }
 
     void TerrainChunk::ReadPatches(StreamReader &streamReader, Terrain &tern)

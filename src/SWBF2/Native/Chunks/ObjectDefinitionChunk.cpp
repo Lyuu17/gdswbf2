@@ -5,11 +5,11 @@
 #include "Native/Chunks/ObjectDefinitionChunk.hpp"
 #include "Native/Objects/ObjectDefinition.hpp"
 
-#include "Core.hpp"
+#include "GameData.hpp"
 
 namespace SWBF2::Native
 {
-    void ObjectDefinitionChunk::ProcessChunk(StreamReader &streamReader)
+    void ObjectDefinitionChunk::ProcessChunk(const std::string &filename, StreamReader &streamReader)
     {
         ObjectDefinition objDef{};
 
@@ -48,6 +48,6 @@ namespace SWBF2::Native
             }
         }
 
-        Core::Instance()->m_objectDefs.insert_or_assign(type, objDef);
+        GameData::Instance()->m_gameData[filename].m_objectDefs.insert_or_assign(type, objDef);
     }
 }

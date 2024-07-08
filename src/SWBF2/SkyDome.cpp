@@ -2,7 +2,7 @@
 #include <godot_cpp/variant/utility_functions.hpp>
 #include <godot_cpp/classes/mesh_instance3d.hpp>
 
-#include "Core.hpp"
+#include "GameData.hpp"
 #include "Level.hpp"
 
 #include "SkyDome.hpp"
@@ -15,7 +15,7 @@ namespace SWBF2
 
         Level *level = godot::Object::cast_to<Level>(get_parent());
 
-        for (const auto &domeModel : Core::Instance()->m_skyDome.m_domeModels)
+        for (const auto &domeModel : GameData::Instance()->m_skyDome.m_domeModels)
         {
             godot::MeshInstance3D *mesh = level->LoadModel(domeModel.m_geometry);
             if (!mesh)

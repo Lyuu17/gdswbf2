@@ -4,7 +4,7 @@
 
 namespace SWBF2::Native
 {
-    void ChunkProcessor::ProcessChunk(StreamReader &streamReader, StreamReader &parentReader)
+    void ChunkProcessor::ProcessChunk(const std::string &filename, StreamReader &streamReader, StreamReader &parentReader)
     {
         if (!m_functions.contains(streamReader.GetHeader().m_Magic))
         {
@@ -13,6 +13,6 @@ namespace SWBF2::Native
         }
 
         const auto &processor = m_functions.at(streamReader.GetHeader().m_Magic);
-        processor(streamReader);
+        processor(filename, streamReader);
     }
 }

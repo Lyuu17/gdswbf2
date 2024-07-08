@@ -19,9 +19,6 @@ namespace SWBF2
         godot::String m_curMapName;
         godot::String m_curGamemode;
 
-        std::unordered_map<std::string, Native::World> m_worlds;
-        std::unordered_map<std::string, Native::Model> m_models;
-
     public:
         Level();
         ~Level();

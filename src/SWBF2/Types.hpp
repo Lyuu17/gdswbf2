@@ -29,24 +29,24 @@ namespace SWBF2
     const static inline std::unordered_map<std::string_view, std::string_view> DefaultGameMaps
     {
         // name, path
-        { "cor1", "cor/cor1" },
-        { "dag1", "dag/dag1" },
-        { "dea1", "dea/dea1" },
-        { "end1", "end/end1" },
-        { "fel1", "fel/fel1" },
-        { "geo1", "geo/geo1" },
-        { "hot1", "hot/hot1" },
-        { "kam1", "kam/kam1" },
-        { "kas2", "kas/kas2" },
-        { "mus1", "mus/mus1" },
-        { "myg1", "myg/myg1" },
-        { "nab2", "nab/nab2" },
-        { "pol1", "pol/pol1" },
-        { "tan1", "tan/tan1" },
-        { "tat2", "tat/tat2" },
-        { "tat3", "tat/tat3" },
-        { "uta1", "uta/uta1" },
-        { "yav1", "yav/yav1" }
+        { "cor1", "cor/cor1.lvl" },
+        { "dag1", "dag/dag1.lvl" },
+        { "dea1", "dea/dea1.lvl" },
+        { "end1", "end/end1.lvl" },
+        { "fel1", "fel/fel1.lvl" },
+        { "geo1", "geo/geo1.lvl" },
+        { "hot1", "hot/hot1.lvl" },
+        { "kam1", "kam/kam1.lvl" },
+        { "kas2", "kas/kas2.lvl" },
+        { "mus1", "mus/mus1.lvl" },
+        { "myg1", "myg/myg1.lvl" },
+        { "nab2", "nab/nab2.lvl" },
+        { "pol1", "pol/pol1.lvl" },
+        { "tan1", "tan/tan1.lvl" },
+        { "tat2", "tat/tat2.lvl" },
+        { "tat3", "tat/tat3.lvl" },
+        { "uta1", "uta/uta1.lvl" },
+        { "yav1", "yav/yav1.lvl" }
     };
 
     enum class Gamemode

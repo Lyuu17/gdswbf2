@@ -11,9 +11,9 @@
 
 namespace SWBF2::Native
 {
-    bool UcfbChunk::ReadUcfbFile(const std::string &filename)
+    bool UcfbChunk::ReadUcfbFile(const std::string &root, const std::string &filename)
     {
-        std::ifstream is{ filename,std::ios::binary | std::ios::ate };
+        std::ifstream is{ root + filename,std::ios::binary | std::ios::ate };
         if (!is.is_open())
         {
             godot::UtilityFunctions::printerr(__FILE__, ":", __LINE__, ": failed open ", filename.c_str(), " file");
@@ -31,14 +31,14 @@ namespace SWBF2::Native
         is.close();
 
         StreamReader streamReader{ bytes };
-        ProcessChunk(streamReader);
+        ProcessChunk(filename, streamReader);
 
         godot::UtilityFunctions::print(__FILE__, ":", __LINE__, ": Finished reading ", bytes.size(), " bytes of ", filename.c_str(), " file");
 
         return true;
     }
 
-    void UcfbChunk::ProcessChunk(StreamReader &streamReader)
+    void UcfbChunk::ProcessChunk(const std::string &filename, StreamReader &streamReader)
     {
         godot::UtilityFunctions::print(__FILE__, ":", __LINE__, ": Processing chunk ", streamReader.GetHeader().ToString().c_str(), " with size ", streamReader.GetHeader().size, ", eof ", streamReader.IsEof());
 
@@ -52,7 +52,7 @@ namespace SWBF2::Native
         }
 
         for (auto &[reader1, reader2] : children_parents) {
-            ChunkProcessor::ProcessChunk(reader1, reader2);
+            ChunkProcessor::ProcessChunk(filename, reader1, reader2);
         }
     }
 }

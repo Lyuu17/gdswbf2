@@ -5,11 +5,11 @@
 #include "Native/Chunks/ChunkProcessor.hpp"
 #include "Native/Chunks/LoclChunk.hpp"
 
-#include "Core.hpp"
+#include "GameData.hpp"
 
 namespace SWBF2::Native
 {
-    void LoclChunk::ProcessChunk(StreamReader &streamReader)
+    void LoclChunk::ProcessChunk(const std::string &filename, StreamReader &streamReader)
     {
         auto loclNameReaderChild = streamReader.ReadChildWithHeader<"NAME"_m>();
 
@@ -18,10 +18,10 @@ namespace SWBF2::Native
 
         auto loclBodyReaderChild = streamReader.ReadChildWithHeader<"BODY"_m>();
         while (loclBodyReaderChild->RemainingBytes() > (sizeof(FNVHash) + sizeof(uint16_t)))
-            ReadLoclEntries(*loclBodyReaderChild, loclName);
+            ReadLoclEntries(filename, *loclBodyReaderChild, loclName);
     }
 
-    void LoclChunk::ReadLoclEntries(StreamReader &streamReader, const std::string &loclName)
+    void LoclChunk::ReadLoclEntries(const std::string &filename, StreamReader &streamReader, const std::string &loclName)
     {
         FNVHash hash;
         streamReader >> hash;
@@ -37,6 +37,6 @@ namespace SWBF2::Native
 
         streamReader >> chars;
 
-        Core::Instance()->m_locl[loclName].insert_or_assign(hash, chars.data());
+        GameData::Instance()->m_gameData[filename].m_locl[loclName].insert_or_assign(hash, chars.data());
     }
 }

@@ -25,23 +25,7 @@ namespace SWBF2
     public: // variables
         lua_State *m_luaState;
 
-        Native::SkyDome m_skyDome;
-
         Gamemode m_curGamemode;
-
-        Native::Terrain m_tern;
-
-        std::unordered_map<uint8_t, PlayerTeam> m_teams;
-
-        std::unordered_map<Gamemode, Native::Level> m_levels;
-        std::unordered_map<std::string, Native::World> m_worlds;
-        std::unordered_map<std::string, Native::Light> m_lights;
-        std::unordered_map<std::string, Native::Model> m_models;
-        std::unordered_map<std::string, Native::Texture> m_tex;
-        std::unordered_map<std::string, Native::ObjectDefinition> m_objectDefs;
-
-        using LoclEntriesMap = std::unordered_map<FNVHash, std::u16string>;
-        std::unordered_map<std::string, LoclEntriesMap> m_locl;
 
     public: // methods
         Core();

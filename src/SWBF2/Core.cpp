@@ -6,6 +6,7 @@
 
 #include "Core.hpp"
 #include "Level.hpp"
+#include "GameData.hpp"
 #include "Version.h"
 
 namespace SWBF2
@@ -38,11 +39,11 @@ namespace SWBF2
 
         m_luaState = lua_open();
 
-        if (!Native::UcfbChunk::ReadUcfbFile("data/_lvl_pc/core.lvl"))
-            throw std::runtime_error{ "failed to load core.lvl from game directory" };
-
-        if (!Native::UcfbChunk::ReadUcfbFile("data/_lvl_pc/common.lvl"))
-            throw std::runtime_error{ "failed to load common.lvl from game directory" };
+        GameData *gameData = memnew(GameData);
+        add_child(gameData);
+        gameData->ReadLevelFile("core.lvl");
+        gameData->ReadLevelFile("common.lvl");
+        gameData->set_owner(this);
 
         godot::UtilityFunctions::print("hello world!");
     }
@@ -58,8 +59,6 @@ namespace SWBF2
             // TODO reset
             return;
         }
-
-        Native::UcfbChunk::ReadUcfbFile(std::format("data/_lvl_pc/{}.lvl", DefaultGameMaps.at(mapName.ascii().get_data())));
 
         Level *lvl = memnew(Level);
         add_child(lvl);

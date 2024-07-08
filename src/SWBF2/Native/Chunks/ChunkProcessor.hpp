@@ -18,7 +18,7 @@
 
 namespace SWBF2::Native
 {
-    using ChunkProcessingFunction = std::function<void(StreamReader &streamReader)>;
+    using ChunkProcessingFunction = std::function<void(const std::string &filename, StreamReader &streamReader)>;
 
     class ChunkProcessor {
     public:
@@ -36,7 +36,7 @@ namespace SWBF2::Native
             { "tern"_m, TerrainChunk::ProcessChunk }
         };
 
-        static void ProcessChunk(StreamReader &streamReader, StreamReader &parentReader);
+        static void ProcessChunk(const std::string &filename, StreamReader &streamReader, StreamReader &parentReader);
     };
 
 }

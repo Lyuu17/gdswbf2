@@ -4,11 +4,11 @@
 #include "Native/Chunks/StreamReader.hpp"
 #include "Native/Chunks/LightChunk.hpp"
 
-#include "Core.hpp"
+#include "GameData.hpp"
 
 namespace SWBF2::Native
 {
-    void LightChunk::ProcessChunk(StreamReader &streamReader)
+    void LightChunk::ProcessChunk(const std::string &filename, StreamReader &streamReader)
     {
         ConfigReader configReader{ streamReader };
 
@@ -64,7 +64,7 @@ namespace SWBF2::Native
                 }
             }
 
-            Core::Instance()->m_lights.emplace(light.m_name, light);
+            GameData::Instance()->m_gameData[filename].m_lights.emplace(light.m_name, light);
         }
     }
 }

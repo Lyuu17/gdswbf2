@@ -6,17 +6,17 @@
 #include "Native/Models/Model.hpp"
 #include "Native/Models/ModelSegment.hpp"
 
-#include "Core.hpp"
+#include "GameData.hpp"
 
 namespace SWBF2::Native
 {
-    void ModelChunk::ProcessChunk(StreamReader &streamReader)
+    void ModelChunk::ProcessChunk(const std::string &filename, StreamReader &streamReader)
     {
         Model model{};
 
         ProcessChunkOut(streamReader, model);
 
-        Core::Instance()->m_models.insert_or_assign(model.m_name, model);
+        GameData::Instance()->m_gameData[filename].m_models.insert_or_assign(model.m_name, model);
     }
 
     void ModelChunk::ProcessChunkOut(StreamReader &streamReader, Model &mdl)

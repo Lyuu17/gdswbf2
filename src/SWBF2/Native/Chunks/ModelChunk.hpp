@@ -8,7 +8,7 @@ namespace SWBF2::Native
 {
     class ModelChunk {
     public:
-        static void ProcessChunk(StreamReader &streamReader);
+        static void ProcessChunk(const std::string &filename, StreamReader &streamReader);
         static void ProcessChunkOut(StreamReader &streamReader, Model &mdl);
         static void ProcessSegmentChunk(StreamReader &streamReader, Model &model);
         static void ProcessSegmentVerticesBuffer(StreamReader &streamReader, Model &model, ModelSegment &segment);

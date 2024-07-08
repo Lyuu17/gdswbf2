@@ -1,8 +1,8 @@
 
 #include <godot_cpp/variant/utility_functions.hpp>
 
-#include "Core.hpp"
 #include "Level.hpp"
+#include "GameData.hpp"
 
 #include "WorldObjects.hpp"
 
@@ -14,7 +14,7 @@ namespace SWBF2
 
         Level *level = godot::Object::cast_to<Level>(get_parent());
 
-        for (const auto &[worldId, world] : Core::Instance()->m_worlds)
+        for (const auto &[worldId, world] : GameData::Instance()->GetMapData().m_worlds)
         {
             for (const auto &inst : world.m_instances)
             {

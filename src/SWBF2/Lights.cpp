@@ -2,7 +2,7 @@
 #include <godot_cpp/variant/utility_functions.hpp>
 #include <godot_cpp/classes/directional_light3d.hpp>
 
-#include "Core.hpp"
+#include "GameData.hpp"
 #include "Level.hpp"
 
 #include "Lights.hpp"
@@ -13,7 +13,7 @@ namespace SWBF2
     {
         set_name("Lights");
 
-        for (const auto &[id, light] : Core::Instance()->m_lights)
+        for (const auto &[id, light] : GameData::Instance()->GetMapData().m_lights)
         {
             godot::DirectionalLight3D *directionalLight3D = memnew(godot::DirectionalLight3D);
             directionalLight3D->set_name(light.m_name.c_str());

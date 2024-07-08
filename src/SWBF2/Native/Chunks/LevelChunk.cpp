@@ -7,10 +7,11 @@
 #include "Native/Hashes.hpp"
 
 #include "Core.hpp"
+#include "GameData.hpp"
 
 namespace SWBF2::Native
 {
-    void LevelChunk::ProcessChunk(StreamReader &streamReader)
+    void LevelChunk::ProcessChunk(const std::string &filename, StreamReader &streamReader)
     {
         Level lvl{};
 
@@ -64,7 +65,7 @@ namespace SWBF2::Native
         {
             if (FNVGenerateHash(std::format("{}_{}", Core::Instance()->GetMapName().ascii().get_data(), str)) == hash)
             {
-                Core::Instance()->m_levels.insert_or_assign(id, lvl);
+                GameData::Instance()->m_gameData[filename].m_levels.insert_or_assign(id, lvl);
                 break;
             }
         }

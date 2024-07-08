@@ -26,6 +26,7 @@ target_sources(${PROJECT_NAME}
         "SWBF2/Native/Terrain.cpp"
         "SWBF2/Native/World.cpp"
         "SWBF2/Core.cpp"
+        "SWBF2/GameData.cpp"
         "SWBF2/Level.cpp"
         "SWBF2/Lights.cpp"
         "SWBF2/SkyDome.cpp"

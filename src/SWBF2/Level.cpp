@@ -16,6 +16,7 @@
 #include "Native/Hashes.hpp"
 
 #include "Core.hpp"
+#include "GameData.hpp"
 #include "Terrain.hpp"
 #include "SkyDome.hpp"
 #include "Lights.hpp"
@@ -37,6 +38,8 @@ namespace SWBF2
     {
         set_name("Level");
 
+        GameData::Instance()->ReadLevelFile(std::string{ DefaultGameMaps.at(Core::Instance()->GetMapName().ascii().get_data()) });
+
         Terrain *terr = memnew(Terrain);
         add_child(terr);
         terr->set_owner(get_parent());
@@ -56,20 +59,22 @@ namespace SWBF2
 
     godot::MeshInstance3D *Level::LoadModel(const std::string &id)
     {
-        if (!Core::Instance()->m_models.contains(id) && !Core::Instance()->m_objectDefs.contains(id))
+        const auto &mapData = GameData::Instance()->GetMapData();
+
+        if (!mapData.m_models.contains(id) && !mapData.m_objectDefs.contains(id))
         {
             return nullptr;
         }
 
         std::string newId = id;
-        if (Core::Instance() ->m_objectDefs.contains(id))
+        if (mapData.m_objectDefs.contains(id))
         {
-            newId = Core::Instance()->m_objectDefs[id].m_geometryName;
+            newId = mapData.m_objectDefs.at(id).m_geometryName;
             if (newId.empty())
                 return nullptr;
         }
 
-        const auto &model = Core::Instance()->m_models[newId];
+        const auto &model = mapData.m_models.at(newId);
 
         godot::MeshInstance3D *meshInstance = memnew(godot::MeshInstance3D);
         meshInstance->set_name(newId.c_str());
@@ -100,9 +105,9 @@ namespace SWBF2
                     auto &material = m_materialPool.getItem(mainTextureName);
                     if (material.is_valid())
                     {
-                        if (!bumpTextureName.empty() && Core::Instance()->m_tex.contains(bumpTextureName))
+                        if (!bumpTextureName.empty() && mapData.m_tex.contains(bumpTextureName))
                         {
-                            auto &bumpTexture = Core::Instance()->m_tex[bumpTextureName].m_formats[0].m_faceLevels[0].m_gdTexture;
+                            auto &bumpTexture = mapData.m_tex.at(bumpTextureName).m_formats[0].m_faceLevels[0].m_gdTexture;
 
                             material->set_feature(godot::BaseMaterial3D::FEATURE_NORMAL_MAPPING, true);
                             material->set_texture(godot::BaseMaterial3D::TEXTURE_NORMAL, bumpTexture);
@@ -141,12 +146,12 @@ namespace SWBF2
             {
                 godot::Sky *sky = memnew(godot::Sky);
                 {
-                    const auto &textureName = Core::Instance()->m_skyDome.m_texture;
-                    if (Core::Instance()->m_tex.contains(textureName))
+                    const auto &textureName = GameData::Instance()->m_skyDome.m_texture;
+                    if (GameData::Instance()->GetMapData().m_tex.contains(textureName))
                     {
                         godot::PanoramaSkyMaterial *panoramaSkyMat = memnew(godot::PanoramaSkyMaterial);
 
-                        auto &texture = Core::Instance()->m_tex[textureName].m_formats[0].m_faceLevels[0].m_gdTexture;
+                        auto &texture = GameData::Instance()->GetMapData().m_tex.at(textureName).m_formats[0].m_faceLevels[0].m_gdTexture;
                         panoramaSkyMat->set_panorama(texture);
 
                         sky->set_material(panoramaSkyMat);

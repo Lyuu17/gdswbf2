@@ -6,7 +6,7 @@ namespace SWBF2::Native
 {
     class LightChunk {
     public:
-        static void ProcessChunk(StreamReader &streamReader);
+        static void ProcessChunk(const std::string &filename, StreamReader &streamReader);
     };
 
 }

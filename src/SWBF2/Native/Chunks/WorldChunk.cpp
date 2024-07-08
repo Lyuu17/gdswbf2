@@ -4,17 +4,17 @@
 #include "Native/Chunks/WorldChunk.hpp"
 #include "Native/Objects/GameObject.hpp"
 
-#include "Core.hpp"
+#include "GameData.hpp"
 
 namespace SWBF2::Native
 {
-    void WorldChunk::ProcessChunk(StreamReader &streamReader)
+    void WorldChunk::ProcessChunk(const std::string &filename, StreamReader &streamReader)
     {
         World world{};
 
         ProcessWorldChunk(streamReader, world);
 
-        Core::Instance()->m_worlds.insert_or_assign(world.m_worldName, world);
+        GameData::Instance()->m_gameData[filename].m_worlds.insert_or_assign(world.m_worldName, world);
     }
 
     void WorldChunk::ProcessWorldChunk(StreamReader &streamReader, World &world)

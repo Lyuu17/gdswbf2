@@ -1,5 +1,5 @@
 
-#include "Core.hpp"
+#include "GameData.hpp"
 
 #include "MaterialPools.hpp"
 
@@ -7,10 +7,11 @@ namespace SWBF2
 {
     const godot::Ref<godot::Texture> &SWBF2::MaterialPools::findTexture(const std::string &id)
     {
-        if (!Core::Instance()->m_tex.contains(id))
+        const auto &mapData = GameData::Instance()->GetMapData();
+        if (!mapData.m_tex.contains(id))
             return m_empty;
 
-        auto &tex = Core::Instance()->m_tex[id];
+        auto &tex = mapData.m_tex.at(id);
         auto &gdTex = tex.m_formats.at(0).m_faceLevels.at(0).m_gdTexture;
         return gdTex;
     }

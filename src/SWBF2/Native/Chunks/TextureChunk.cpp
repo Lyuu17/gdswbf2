@@ -6,11 +6,11 @@
 #include "Native/Chunks/TextureChunk.hpp"
 #include "Native/Texture/TextureUtils.hpp"
 
-#include "Core.hpp"
+#include "GameData.hpp"
 
 namespace SWBF2::Native
 {
-    void TextureChunk::ProcessChunk(StreamReader &streamReader)
+    void TextureChunk::ProcessChunk(const std::string &filename, StreamReader &streamReader)
     {
         Texture tex{};
 
@@ -44,7 +44,7 @@ namespace SWBF2::Native
             }
         }
 
-        Core::Instance()->m_tex.try_emplace(tex.m_name, std::move(tex));
+        GameData::Instance()->m_gameData[filename].m_tex.try_emplace(tex.m_name, std::move(tex));
     }
 
     void TextureChunk::ProcessFMTChunk(StreamReader &streamReader, Texture &tex)

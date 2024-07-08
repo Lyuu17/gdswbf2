@@ -4,11 +4,11 @@
 #include "Native/Chunks/StreamReader.hpp"
 #include "Native/Chunks/SkyChunk.hpp"
 
-#include "Core.hpp"
+#include "GameData.hpp"
 
 namespace SWBF2::Native
 {
-    void SkyChunk::ProcessChunk(StreamReader &streamReader)
+    void SkyChunk::ProcessChunk(const std::string &filename, StreamReader &streamReader)
     {
         ConfigReader configReader{ streamReader };
 
@@ -20,7 +20,7 @@ namespace SWBF2::Native
                 {
                     case "Texture"_fnv:
                     {
-                        Core::Instance()->m_skyDome.m_texture = val->m_string;
+                        GameData::Instance()->m_skyDome.m_texture = val->m_string;
                         break;
                     }
 
@@ -42,7 +42,7 @@ namespace SWBF2::Native
             {
                 case "Geometry"_fnv:
                 {
-                    Core::Instance()->m_skyDome.m_domeModels.push_back({ val->m_string });
+                    GameData::Instance()->m_skyDome.m_domeModels.push_back({ val->m_string });
                     break;
                 }
             }
