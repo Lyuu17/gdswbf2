@@ -13,9 +13,6 @@ namespace SWBF2
         ~Terrain() = default;
 
     public:
-        void LoadTerrain();
-
-    public:
         virtual void _ready() override;
 
         void _process(double delta_time) override;

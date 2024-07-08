@@ -19,10 +19,6 @@ namespace SWBF2
         set_name("Terrain");
     }
 
-    void Terrain::LoadTerrain()
-    {
-    }
-
     void Terrain::_process(double delta_time)
     {
     }

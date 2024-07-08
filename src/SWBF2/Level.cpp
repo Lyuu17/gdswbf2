@@ -17,6 +17,7 @@
 #include "Native/Hashes.hpp"
 
 #include "Core.hpp"
+#include "Terrain.hpp"
 #include "SkyDome.hpp"
 
 #include "Level.hpp"
@@ -34,6 +35,10 @@ namespace SWBF2
     void Level::_ready()
     {
         set_name("Level");
+
+        Terrain *terr = memnew(Terrain);
+        add_child(terr);
+        terr->set_owner(this);
 
         SkyDome *skyDome = memnew(SkyDome);
         add_child(skyDome);
