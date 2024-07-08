@@ -38,15 +38,15 @@ namespace SWBF2
 
         Terrain *terr = memnew(Terrain);
         add_child(terr);
-        terr->set_owner(this);
+        terr->set_owner(get_parent());
 
         SkyDome *skyDome = memnew(SkyDome);
         add_child(skyDome);
-        skyDome->set_owner(this);
+        skyDome->set_owner(get_parent());
 
         Lights *lights = memnew(Lights);
         add_child(lights);
-        lights->set_owner(this);
+        lights->set_owner(get_parent());
     }
 
     godot::MeshInstance3D *Level::LoadModel(const std::string &id)

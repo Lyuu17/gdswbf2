@@ -29,7 +29,7 @@ namespace SWBF2
 
             add_child(mesh);
 
-            mesh->set_owner(this->get_parent());
+            mesh->set_owner(get_parent()->get_parent());
         }
     }
 

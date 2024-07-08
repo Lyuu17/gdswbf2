@@ -9,6 +9,8 @@
 #include "SWBF2/Core.hpp"
 #include "SWBF2/Level.hpp"
 #include "SWBF2/SkyDome.hpp"
+#include "SWBF2/Terrain.hpp"
+#include "SWBF2/Lights.hpp"
 
 /// @file
 /// Register our classes with Godot.
@@ -30,6 +32,8 @@ namespace
         godot::ClassDB::register_class<SWBF2::Core>();
         godot::ClassDB::register_class<SWBF2::Level>();
         godot::ClassDB::register_class<SWBF2::SkyDome>();
+        godot::ClassDB::register_class<SWBF2::Terrain>();
+        godot::ClassDB::register_class<SWBF2::Lights>();
     }
 
     /// @brief Called by Godot to let us do any cleanup.

@@ -26,7 +26,7 @@ namespace SWBF2
 
             add_child(directionalLight3D);
 
-            directionalLight3D->set_owner(get_parent());
+            directionalLight3D->set_owner(get_parent()->get_parent());
         }
     }
 
