@@ -50,15 +50,17 @@ namespace SWBF2
 
     void Core::LoadLevel(const godot::String &mapName)
     {
-        m_curMapName = mapName;
-
         if (mapName.is_empty())
         {
             remove_child(find_child("Level", false));
 
-            // TODO reset
+            GameData::Instance()->ClearMapData();
+
+            m_curMapName = mapName;
             return;
         }
+
+        m_curMapName = mapName;
 
         Level *lvl = memnew(Level);
         add_child(lvl);

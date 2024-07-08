@@ -49,6 +49,7 @@ namespace SWBF2
 
         void ReadLevelFile(const std::string &file);
         const SGameData &GetMapData();
+        void ClearMapData();
 
         void _ready() override;
 

@@ -40,8 +40,14 @@ namespace SWBF2
 
     const GameData::SGameData &GameData::GetMapData()
     {
-        std::string mapName{ DefaultGameMaps.at(Core::Instance()->GetMapName().ascii().get_data()) };
-        return m_gameData[mapName];
+        std::string mapPath{ DefaultGameMaps.at(Core::Instance()->GetMapName().ascii().get_data()) };
+        return m_gameData[mapPath];
+    }
+
+    void GameData::ClearMapData()
+    {
+        std::string mapPath{ DefaultGameMaps.at(Core::Instance()->GetMapName().ascii().get_data()) };
+        m_gameData[mapPath] = {};
     }
 
     void GameData::_bind_methods()
