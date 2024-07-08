@@ -31,6 +31,7 @@ target_sources(${PROJECT_NAME}
         "SWBF2/SkyDome.cpp"
         "SWBF2/Terrain.cpp"
         "SWBF2/MaterialPools.cpp"
+        "SWBF2/WorldObjects.cpp"
         "RegisterExtension.cpp"
 )
 

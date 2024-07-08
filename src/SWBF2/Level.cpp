@@ -19,6 +19,7 @@
 #include "Terrain.hpp"
 #include "SkyDome.hpp"
 #include "Lights.hpp"
+#include "WorldObjects.hpp"
 
 #include "Level.hpp"
 
@@ -47,6 +48,10 @@ namespace SWBF2
         Lights *lights = memnew(Lights);
         add_child(lights);
         lights->set_owner(get_parent());
+
+        WorldObjects *objs = memnew(WorldObjects);
+        add_child(objs);
+        objs->set_owner(get_parent());
     }
 
     godot::MeshInstance3D *Level::LoadModel(const std::string &id)
@@ -126,31 +131,6 @@ namespace SWBF2
         return meshInstance;
     }
 
-    void Level::LoadLevelInstances()
-    {
-        for (const auto &[worldId, world] : Core::Instance()->m_worlds)
-        {
-            for (const auto &inst : world.m_instances)
-            {
-                godot::MeshInstance3D *mesh = LoadModel(inst.m_type);
-                if (!mesh)
-                {
-                    godot::UtilityFunctions::printerr(__FILE__, ":", __LINE__, ": Missing mesh for instance ", inst.m_type.c_str());
-                    continue;
-                }
-
-                mesh->set_name(inst.m_name.c_str());
-                mesh->translate(inst.m_position);
-                mesh->set_basis(inst.m_rotationMatrix);
-
-                add_child(mesh);
-
-                mesh->set_owner(this->get_parent());
-                mesh->set_unique_name_in_owner(true);
-            }
-        }
-    }
-
     void Level::LoadWorldEnvironment()
     {
         godot::WorldEnvironment *worldEnv = memnew(godot::WorldEnvironment);
@@ -189,7 +169,6 @@ namespace SWBF2
     {
         m_curMapName = mapName;
 
-        LoadLevelInstances();
         LoadWorldEnvironment();
     }
 

@@ -31,9 +31,7 @@ namespace SWBF2
         godot::MeshInstance3D *LoadModel(const std::string &id);
 
     private:
-        void LoadLevelInstances();
         void LoadWorldEnvironment();
-        void LoadLights();
 
     public:
         const godot::String &GetMapName() { return m_curMapName; };
