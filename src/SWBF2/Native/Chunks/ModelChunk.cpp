@@ -5,7 +5,8 @@
 #include "Native/Chunks/ModelChunk.hpp"
 #include "Native/Models/Model.hpp"
 #include "Native/Models/ModelSegment.hpp"
-#include "Native/SWBF2.hpp"
+
+#include "Core.hpp"
 
 namespace SWBF2::Native
 {
@@ -15,7 +16,7 @@ namespace SWBF2::Native
 
         ProcessChunkOut(streamReader, model);
 
-        SWBF2::m_models.insert_or_assign(model.m_name, model);
+        Core::Instance()->m_models.insert_or_assign(model.m_name, model);
     }
 
     void ModelChunk::ProcessChunkOut(StreamReader &streamReader, Model &mdl)

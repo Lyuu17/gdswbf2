@@ -1,6 +1,8 @@
 
 #pragma once
 
+#include "Types.hpp"
+
 namespace SWBF2::Native
 {
     class GameObject {

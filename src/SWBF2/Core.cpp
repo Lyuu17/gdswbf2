@@ -3,7 +3,6 @@
 #include <godot_cpp/classes/camera3d.hpp>
 
 #include "Native/Chunks/ChunkProcessor.hpp"
-#include "Native/SWBF2.hpp"
 
 #include "Core.hpp"
 #include "Level.hpp"
@@ -12,13 +11,39 @@
 
 namespace SWBF2
 {
+    Core *Core::m_instance = nullptr;
+
     Core::Core()
+        : m_curGamemode(Gamemode::NONE),
+        m_luaState(nullptr)
     {
+        m_instance = this;
+    }
+
+    Core::~Core()
+    {
+        m_instance = nullptr;
+
+        if (m_luaState)
+            lua_close(m_luaState);
+    }
+
+    Core *Core::Instance()
+    {
+        return m_instance;
     }
 
     void Core::_ready()
     {
         set_name("Core");
+
+        m_luaState = lua_open();
+
+        if (!Native::UcfbChunk::ReadUcfbFile("data/_lvl_pc/core.lvl"))
+            throw std::runtime_error{ "failed to load core.lvl from game directory" };
+
+        if (!Native::UcfbChunk::ReadUcfbFile("data/_lvl_pc/common.lvl"))
+            throw std::runtime_error{ "failed to load common.lvl from game directory" };
 
         godot::UtilityFunctions::print("hello world!");
     }
@@ -32,9 +57,11 @@ namespace SWBF2
             remove_child(find_child("Level", false));
             remove_child(find_child("Terrain", false));
 
-            SWBF2::Native::SWBF2::Reset();
+            // TODO reset
             return;
         }
+
+        Native::UcfbChunk::ReadUcfbFile(std::format("data/_lvl_pc/{}.lvl", DefaultGameMaps.at(mapName.ascii().get_data())));
 
         Level *lvl = memnew(Level);
         add_child(lvl);
@@ -53,7 +80,7 @@ namespace SWBF2
         godot::ClassDB::bind_method(godot::D_METHOD("load_level", "mapname"), &Core::LoadLevel);
 
         std::string mapList;
-        for (const auto &[mapId, mapPath] : SWBF2::Native::DefaultGameMaps)
+        for (const auto &[mapId, mapPath] : DefaultGameMaps)
             mapList = std::format("{},{}", mapList, mapId);
 
         godot::ClassDB::add_property("Core", godot::PropertyInfo(godot::Variant::STRING, "mapname", godot::PROPERTY_HINT_ENUM, mapList.c_str()), "load_level", "get_mapname");

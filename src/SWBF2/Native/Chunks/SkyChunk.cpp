@@ -3,7 +3,8 @@
 #include "Native/Chunks/ConfigReader.hpp"
 #include "Native/Chunks/StreamReader.hpp"
 #include "Native/Chunks/SkyChunk.hpp"
-#include "Native/SWBF2.hpp"
+
+#include "Core.hpp"
 
 namespace SWBF2::Native
 {
@@ -19,7 +20,7 @@ namespace SWBF2::Native
                 {
                     case "Texture"_fnv:
                     {
-                        SWBF2::m_skyDome.m_texture = val->m_string;
+                        Core::Instance()->m_skyDome.m_texture = val->m_string;
                         break;
                     }
 
@@ -41,7 +42,7 @@ namespace SWBF2::Native
             {
                 case "Geometry"_fnv:
                 {
-                    SWBF2::m_skyDome.m_domeModels.push_back({ val->m_string });
+                    Core::Instance()->m_skyDome.m_domeModels.push_back({ val->m_string });
                     break;
                 }
             }

@@ -1,5 +1,5 @@
 
-#include "Native/SWBF2.hpp"
+#include "Core.hpp"
 
 #include "MaterialPools.hpp"
 
@@ -7,10 +7,10 @@ namespace SWBF2
 {
     const godot::Ref<godot::Texture> &SWBF2::MaterialPools::findTexture(const std::string &id)
     {
-        if (!Native::SWBF2::m_tex.contains(id))
+        if (!Core::Instance()->m_tex.contains(id))
             return m_empty;
 
-        auto &tex = Native::SWBF2::m_tex[id];
+        auto &tex = Core::Instance()->m_tex[id];
         auto &gdTex = tex.m_formats.at(0).m_faceLevels.at(0).m_gdTexture;
         return gdTex;
     }

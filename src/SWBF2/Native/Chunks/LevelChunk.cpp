@@ -4,9 +4,9 @@
 #include "Native/Chunks/LevelChunk.hpp"
 #include "Native/Chunks/WorldChunk.hpp"
 #include "Native/Chunks/ModelChunk.hpp"
-
 #include "Native/Hashes.hpp"
-#include "Native/SWBF2.hpp"
+
+#include "Core.hpp"
 
 namespace SWBF2::Native
 {
@@ -51,20 +51,20 @@ namespace SWBF2::Native
             }
         }
 
-        const static std::unordered_map<LevelGamemode, std::string_view> LevelGamemodesStr
+        const static std::unordered_map<Gamemode, std::string_view> LevelGamemodesStr
         {
-            { LevelGamemode::CTF, "ctf" },
-            { LevelGamemode::CONQUEST, "conquest" },
-            { LevelGamemode::CENTERFLAG, "centerflag" },
-            { LevelGamemode::CAMPAIGN, "campaign" },
-            { LevelGamemode::TDM, "tdm" }
+            { Gamemode::CTF, "ctf" },
+            { Gamemode::CONQUEST, "conquest" },
+            { Gamemode::CENTERFLAG, "centerflag" },
+            { Gamemode::CAMPAIGN, "campaign" },
+            { Gamemode::TDM, "tdm" }
         };
 
         for (const auto &[id, str] : LevelGamemodesStr)
         {
-            if (FNVGenerateHash(std::format("{}_{}", SWBF2::m_curMapName, str)) == hash)
+            if (FNVGenerateHash(std::format("{}_{}", Core::Instance()->GetMapName().ascii().get_data(), str)) == hash)
             {
-                SWBF2::m_levels.insert_or_assign(id, lvl);
+                Core::Instance()->m_levels.insert_or_assign(id, lvl);
                 break;
             }
         }

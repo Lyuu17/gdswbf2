@@ -23,7 +23,6 @@ target_sources(${PROJECT_NAME}
         "SWBF2/Native/Texture/TextureUtils.cpp"
         "SWBF2/Native/Hashes.cpp"
         "SWBF2/Native/Level.cpp"
-        "SWBF2/Native/SWBF2.cpp"
         "SWBF2/Native/Terrain.cpp"
         "SWBF2/Native/World.cpp"
         "SWBF2/Core.cpp"

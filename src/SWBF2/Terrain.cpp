@@ -8,8 +8,7 @@
 #include <godot_cpp/classes/array_mesh.hpp>
 #include <godot_cpp/godot.hpp>
 
-#include "Native/SWBF2.hpp"
-
+#include "Core.hpp"
 #include "Terrain.hpp"
 #include "Level.hpp"
 

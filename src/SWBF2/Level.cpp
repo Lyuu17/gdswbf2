@@ -15,12 +15,21 @@
 #include "Native/Chunks/ChunkProcessor.hpp"
 #include "Native/Models/ModelUtils.hpp"
 #include "Native/Hashes.hpp"
-#include "Native/SWBF2.hpp"
+
+#include "Core.hpp"
 
 #include "Level.hpp"
 
 namespace SWBF2
 {
+    Level::Level()
+    {
+    }
+
+    Level::~Level()
+    {
+    }
+
     void Level::_ready()
     {
         set_name("Level");
@@ -28,20 +37,20 @@ namespace SWBF2
 
     godot::MeshInstance3D *Level::LoadModel(const std::string &id)
     {
-        if (!Native::SWBF2::m_models.contains(id) && !Native::SWBF2::m_objectDefs.contains(id))
+        if (!Core::Instance()->m_models.contains(id) && !Core::Instance()->m_objectDefs.contains(id))
         {
             return nullptr;
         }
 
         std::string newId = id;
-        if (Native::SWBF2::m_objectDefs.contains(id))
+        if (Core::Instance() ->m_objectDefs.contains(id))
         {
-            newId = Native::SWBF2::m_objectDefs[id].m_geometryName;
+            newId = Core::Instance()->m_objectDefs[id].m_geometryName;
             if (newId.empty())
                 return nullptr;
         }
 
-        const auto &model = Native::SWBF2::m_models[newId];
+        const auto &model = Core::Instance()->m_models[newId];
 
         godot::MeshInstance3D *meshInstance = memnew(godot::MeshInstance3D);
         meshInstance->set_name(newId.c_str());
@@ -72,9 +81,9 @@ namespace SWBF2
                     auto &material = m_materialPool.getItem(mainTextureName);
                     if (material.is_valid())
                     {
-                        if (!bumpTextureName.empty() && Native::SWBF2::m_tex.contains(bumpTextureName))
+                        if (!bumpTextureName.empty() && Core::Instance()->m_tex.contains(bumpTextureName))
                         {
-                            auto &bumpTexture = Native::SWBF2::m_tex[bumpTextureName].m_formats[0].m_faceLevels[0].m_gdTexture;
+                            auto &bumpTexture = Core::Instance()->m_tex[bumpTextureName].m_formats[0].m_faceLevels[0].m_gdTexture;
 
                             material->set_feature(godot::BaseMaterial3D::FEATURE_NORMAL_MAPPING, true);
                             material->set_texture(godot::BaseMaterial3D::TEXTURE_NORMAL, bumpTexture);
@@ -105,7 +114,7 @@ namespace SWBF2
 
     void Level::LoadLevelInstances()
     {
-        for (const auto &[worldId, world] : Native::SWBF2::m_worlds)
+        for (const auto &[worldId, world] : Core::Instance()->m_worlds)
         {
             for (const auto &inst : world.m_instances)
             {
@@ -138,12 +147,12 @@ namespace SWBF2
             {
                 godot::Sky *sky = memnew(godot::Sky);
                 {
-                    const auto &textureName = Native::SWBF2::m_skyDome.m_texture;
-                    if (Native::SWBF2::m_tex.contains(textureName))
+                    const auto &textureName = Core::Instance()->m_skyDome.m_texture;
+                    if (Core::Instance()->m_tex.contains(textureName))
                     {
                         godot::PanoramaSkyMaterial *panoramaSkyMat = memnew(godot::PanoramaSkyMaterial);
 
-                        auto &texture = Native::SWBF2::m_tex[textureName].m_formats[0].m_faceLevels[0].m_gdTexture;
+                        auto &texture = Core::Instance()->m_tex[textureName].m_formats[0].m_faceLevels[0].m_gdTexture;
                         panoramaSkyMat->set_panorama(texture);
 
                         sky->set_material(panoramaSkyMat);
@@ -164,7 +173,7 @@ namespace SWBF2
 
     void Level::LoadLights()
     {
-        for (const auto &[id, light] : SWBF2::Native::SWBF2::m_lights)
+        for (const auto &[id, light] : Core::Instance()->m_lights)
         {
             godot::DirectionalLight3D *directionalLight3D = memnew(godot::DirectionalLight3D);
             directionalLight3D->set_name(light.m_name.c_str());
@@ -183,7 +192,7 @@ namespace SWBF2
 
     void Level::LoadSkyDome()
     {
-        for (const auto &domeModel : Native::SWBF2::m_skyDome.m_domeModels)
+        for (const auto &domeModel : Core::Instance()->m_skyDome.m_domeModels)
         {
             godot::MeshInstance3D *mesh = LoadModel(domeModel.m_geometry);
             if (!mesh)
@@ -204,9 +213,6 @@ namespace SWBF2
     void Level::LoadLevel(const godot::String &mapName)
     {
         m_curMapName = mapName;
-
-        if (!Native::SWBF2::LoadLevelFile(mapName.ascii().get_data()))
-            throw std::runtime_error{ "failed to load the game level" };
 
         LoadLevelInstances();
         LoadWorldEnvironment();

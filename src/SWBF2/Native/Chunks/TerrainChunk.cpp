@@ -3,7 +3,8 @@
 #include "Native/Chunks/StreamReader.hpp"
 #include "Native/Chunks/TerrainChunk.hpp"
 #include "Native/Terrain.hpp"
-#include "Native/SWBF2.hpp"
+
+#include "Core.hpp"
 
 namespace SWBF2::Native
 {
@@ -118,7 +119,7 @@ namespace SWBF2::Native
             }
         }
 
-        SWBF2::m_tern = tern;
+        Core::Instance()->m_tern = tern;
     }
 
     void TerrainChunk::ReadPatches(StreamReader &streamReader, Terrain &tern)

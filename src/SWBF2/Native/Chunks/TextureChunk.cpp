@@ -1,11 +1,12 @@
-#include <godot_cpp/variant/utility_functions.hpp>
 
+#include <godot_cpp/variant/utility_functions.hpp>
 #include <godot_cpp/classes/image_texture.hpp>
 
 #include "Native/Chunks/StreamReader.hpp"
 #include "Native/Chunks/TextureChunk.hpp"
 #include "Native/Texture/TextureUtils.hpp"
-#include "Native/SWBF2.hpp"
+
+#include "Core.hpp"
 
 namespace SWBF2::Native
 {
@@ -43,7 +44,7 @@ namespace SWBF2::Native
             }
         }
 
-        SWBF2::m_tex.try_emplace(tex.m_name, std::move(tex));
+        Core::Instance()->m_tex.try_emplace(tex.m_name, std::move(tex));
     }
 
     void TextureChunk::ProcessFMTChunk(StreamReader &streamReader, Texture &tex)

@@ -5,6 +5,9 @@
 #include <godot_cpp/classes/standard_material3d.hpp>
 #include <godot_cpp/classes/mesh_instance3d.hpp>
 
+#include "Native/Models/Model.hpp"
+#include "Native/Texture/Texture.hpp"
+
 #include "MaterialPools.hpp"
 
 namespace SWBF2
@@ -16,9 +19,12 @@ namespace SWBF2
         godot::String m_curMapName;
         godot::String m_curGamemode;
 
+        std::unordered_map<std::string, Native::World> m_worlds;
+        std::unordered_map<std::string, Native::Model> m_models;
+
     public:
-        Level() {}
-        ~Level() = default;
+        Level();
+        ~Level();
 
         MaterialPools m_materialPool;
 

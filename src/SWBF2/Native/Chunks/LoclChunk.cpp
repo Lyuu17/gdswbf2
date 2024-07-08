@@ -4,7 +4,8 @@
 #include "Native/Chunks/StreamReader.hpp"
 #include "Native/Chunks/ChunkProcessor.hpp"
 #include "Native/Chunks/LoclChunk.hpp"
-#include "Native/SWBF2.hpp"
+
+#include "Core.hpp"
 
 namespace SWBF2::Native
 {
@@ -36,6 +37,6 @@ namespace SWBF2::Native
 
         streamReader >> chars;
 
-        SWBF2::m_locl[loclName].insert_or_assign(hash, chars.data());
+        Core::Instance()->m_locl[loclName].insert_or_assign(hash, chars.data());
     }
 }

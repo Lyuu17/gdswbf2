@@ -3,7 +3,8 @@
 #include "Native/Chunks/ConfigReader.hpp"
 #include "Native/Chunks/StreamReader.hpp"
 #include "Native/Chunks/LightChunk.hpp"
-#include "Native/SWBF2.hpp"
+
+#include "Core.hpp"
 
 namespace SWBF2::Native
 {
@@ -63,7 +64,7 @@ namespace SWBF2::Native
                 }
             }
 
-            SWBF2::m_lights.emplace(light.m_name, light);
+            Core::Instance()->m_lights.emplace(light.m_name, light);
         }
     }
 }

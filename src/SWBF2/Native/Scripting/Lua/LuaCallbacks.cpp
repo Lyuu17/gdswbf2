@@ -1,7 +1,7 @@
 
 #include <lauxlib.h>
 
-#include "Native/SWBF2.hpp"
+#include "Core.hpp"
 
 #include "Native/Scripting/Lua/LuaCallbacks.hpp"
 #include "Native/Scripting/Lua/ScriptCB.hpp"
@@ -600,9 +600,9 @@ namespace SWBF2::Native::Scripting::Lua
 
     void LuaCallbacks::RegisterCallback(const char *name, lua_CFunction func)
     {
-        lua_pushcfunction(SWBF2::m_luaState, func);
-        lua_pushstring(SWBF2::m_luaState, name);
-        lua_insert(SWBF2::m_luaState, -2);
-        lua_settable(SWBF2::m_luaState, -10001);
+        lua_pushcfunction(Core::Instance()->m_luaState, func);
+        lua_pushstring(Core::Instance()->m_luaState, name);
+        lua_insert(Core::Instance()->m_luaState, -2);
+        lua_settable(Core::Instance()->m_luaState, -10001);
     }
 }

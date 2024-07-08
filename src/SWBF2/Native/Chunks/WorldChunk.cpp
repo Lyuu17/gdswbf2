@@ -3,7 +3,8 @@
 #include "Native/Chunks/StreamReader.hpp"
 #include "Native/Chunks/WorldChunk.hpp"
 #include "Native/Objects/GameObject.hpp"
-#include "Native/SWBF2.hpp"
+
+#include "Core.hpp"
 
 namespace SWBF2::Native
 {
@@ -13,7 +14,7 @@ namespace SWBF2::Native
 
         ProcessWorldChunk(streamReader, world);
 
-        SWBF2::m_worlds.insert_or_assign(world.m_worldName, world);
+        Core::Instance()->m_worlds.insert_or_assign(world.m_worldName, world);
     }
 
     void WorldChunk::ProcessWorldChunk(StreamReader &streamReader, World &world)
