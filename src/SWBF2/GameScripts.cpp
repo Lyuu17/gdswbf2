@@ -37,6 +37,12 @@ namespace SWBF2
 
         m_luaState = lua_open();
 
+        RegisterCallback("_ALERT", [](lua_State *L) -> int
+            {
+                godot::UtilityFunctions::printerr("GameScripts/Lua error: ", luaL_checkstring(L, 1));
+                return 0;
+            });
+
         GameData::Instance()->ReadLevelFile("shell.lvl");
 
         LoadScript("shell_interface");
