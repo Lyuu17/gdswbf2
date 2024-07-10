@@ -49,6 +49,45 @@ namespace SWBF2
         { "yav1", "yav/yav1.lvl" }
     };
 
+    enum class Language
+    {
+        ENGLISH = 0,
+        SPANISH,
+        ITALIAN,
+        FRENCH,
+        GERMAN,
+        JAPANESE,
+        UK_ENGLISH,
+        THAI,
+        POLISH
+    };
+
+    const static inline std::unordered_map<std::string_view, Language> DefaultLanguagesByName
+    {
+        { "english", Language::ENGLISH },
+        { "spanish", Language::SPANISH },
+        { "italian", Language::ITALIAN },
+        { "french", Language::FRENCH },
+        { "german", Language::GERMAN },
+        { "japanese", Language::JAPANESE },
+        { "uk_english", Language::UK_ENGLISH },
+        { "thai", Language::THAI },
+        { "polish", Language::POLISH }
+    };
+
+    const static inline std::unordered_map<Language, std::string_view> DefaultLanguages
+    {
+        { Language::ENGLISH, "english" },
+        { Language::SPANISH, "spanish" },
+        { Language::ITALIAN, "italian" },
+        { Language::FRENCH, "french" },
+        { Language::GERMAN, "german" },
+        { Language::JAPANESE, "japanese" },
+        { Language::UK_ENGLISH, "uk_english" },
+        { Language::THAI, "thai" },
+        { Language::POLISH, "polish" }
+    };
+
     enum class Gamemode
     {
         NONE = 0,

@@ -21,11 +21,11 @@ namespace SWBF2
         static Core *m_instance;
 
         godot::String m_curMapName;
-        godot::String m_language;
         godot::String m_platform;
 
     public: // variables
         Gamemode m_curGamemode;
+        Language m_language;
 
     public: // methods
         Core();
@@ -36,8 +36,12 @@ namespace SWBF2
         const godot::String &GetMapName() { return m_curMapName; };
         void LoadLevel(const godot::String &mapName);
 
-        const godot::String &GetLanguage() { return m_language; };
-        void SetLanguage(const godot::String &language) { m_language = language; };
+        const godot::String &GetLanguage() const {
+            static godot::String str{ std::string{ DefaultLanguages.at(m_language) }.c_str() };
+            return str;
+        }
+
+        void SetLanguage(const godot::String &language) { m_language = DefaultLanguagesByName.at(language.ascii().get_data()); }
 
         const godot::String &GetPlatform() { return m_platform; };
 

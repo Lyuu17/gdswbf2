@@ -16,7 +16,7 @@ namespace SWBF2
 
     Core::Core()
         : m_curGamemode(Gamemode::NONE)
-        , m_language("english")
+        , m_language(Language::ENGLISH)
         , m_platform("pc")
     {
         m_instance = this;

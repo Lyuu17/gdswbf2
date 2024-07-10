@@ -38,7 +38,7 @@ namespace SWBF2
             std::unordered_map<std::string, Native::Scripting::Lua::LuaScript> m_luaScripts;
 
             using LoclEntriesMap = std::unordered_map<FNVHash, std::u16string>;
-            std::unordered_map<std::string, LoclEntriesMap> m_locl;
+            std::unordered_map<Language, LoclEntriesMap> m_locl;
         };
 
         std::unordered_map<std::string, SGameData> m_gameData;

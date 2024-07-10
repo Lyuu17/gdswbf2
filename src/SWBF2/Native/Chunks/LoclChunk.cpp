@@ -37,6 +37,8 @@ namespace SWBF2::Native
 
         streamReader >> chars;
 
-        GameData::Instance()->m_gameData[filename].m_locl[loclName].insert_or_assign(hash, chars.data());
+        Language langId = DefaultLanguagesByName.at(loclName);
+
+        GameData::Instance()->m_gameData[filename].m_locl[langId].insert_or_assign(hash, chars.data());
     }
 }

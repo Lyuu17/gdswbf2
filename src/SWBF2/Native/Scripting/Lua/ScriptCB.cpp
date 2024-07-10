@@ -2,8 +2,10 @@
 #include <lua.h>
 
 #include "Core.hpp"
+#include "GameData.hpp"
 
 #include "LuaCallbacks.hpp"
+#include "LuaUtils.hpp"
 #include "ScriptCB.hpp"
 
 namespace SWBF2::Native::Scripting::Lua
@@ -22,7 +24,9 @@ namespace SWBF2::Native::Scripting::Lua
 
     int ScriptCB_GetLanguage(lua_State *L)
     {
-        lua_pushstring(L, Core::Instance()->GetLanguage().ascii().get_data());
+        Language langId = Core::Instance()->m_language;
+        lua_pushstring(L, std::string{ DefaultLanguages.at(langId) }.c_str());
+        lua_pushnumber(L, (lua_Number)langId);
 
         return 1;
     }
@@ -59,7 +63,16 @@ namespace SWBF2::Native::Scripting::Lua
 
     int ScriptCB_getlocalizestr(lua_State *L)
     {
-        return 0;
+        const char *key = luaL_checkstring(L, 1);
+
+        const auto &langId = Core::Instance()->m_language;
+        const auto &locl = GameData::Instance()->GetMapData().m_locl;
+        if (locl.contains(langId))
+            LuaUtils::PushUString(locl.at(langId).at(FNVGenerateHash(key)));
+        else
+            LuaUtils::PushUString({});
+
+        return 1;
     }
 
     int ScriptCB_usprintf(lua_State *L)
