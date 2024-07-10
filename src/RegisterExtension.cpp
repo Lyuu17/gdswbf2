@@ -13,6 +13,7 @@
 #include "SWBF2/Lights.hpp"
 #include "SWBF2/WorldObjects.hpp"
 #include "SWBF2/GameData.hpp"
+#include "SWBF2/GameScripts.hpp"
 
 /// @file
 /// Register our classes with Godot.
@@ -38,6 +39,7 @@ namespace
         godot::ClassDB::register_class<SWBF2::Lights>();
         godot::ClassDB::register_class<SWBF2::WorldObjects>();
         godot::ClassDB::register_class<SWBF2::GameData>();
+        godot::ClassDB::register_class<SWBF2::GameScripts>();
     }
 
     /// @brief Called by Godot to let us do any cleanup.

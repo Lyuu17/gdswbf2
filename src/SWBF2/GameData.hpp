@@ -11,6 +11,7 @@
 #include "Native/SkyDome.hpp"
 #include "Native/Light.hpp"
 #include "Native/Terrain.hpp"
+#include "Native/Scripting/Lua/LuaScript.hpp"
 
 namespace SWBF2
 {
@@ -34,6 +35,7 @@ namespace SWBF2
             std::unordered_map<std::string, Native::Model> m_models;
             std::unordered_map<std::string, Native::Texture> m_tex;
             std::unordered_map<std::string, Native::ObjectDefinition> m_objectDefs;
+            std::unordered_map<std::string, Native::Scripting::Lua::LuaScript> m_luaScripts;
 
             using LoclEntriesMap = std::unordered_map<FNVHash, std::u16string>;
             std::unordered_map<std::string, LoclEntriesMap> m_locl;

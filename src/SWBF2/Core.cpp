@@ -7,6 +7,7 @@
 #include "Core.hpp"
 #include "Level.hpp"
 #include "GameData.hpp"
+#include "GameScripts.hpp"
 #include "Version.h"
 
 namespace SWBF2
@@ -14,8 +15,7 @@ namespace SWBF2
     Core *Core::m_instance = nullptr;
 
     Core::Core()
-        : m_curGamemode(Gamemode::NONE),
-        m_luaState(nullptr)
+        : m_curGamemode(Gamemode::NONE)
     {
         m_instance = this;
     }
@@ -23,9 +23,6 @@ namespace SWBF2
     Core::~Core()
     {
         m_instance = nullptr;
-
-        if (m_luaState)
-            lua_close(m_luaState);
     }
 
     Core *Core::Instance()
@@ -37,13 +34,15 @@ namespace SWBF2
     {
         set_name("Core");
 
-        m_luaState = lua_open();
-
         GameData *gameData = memnew(GameData);
         add_child(gameData);
         gameData->ReadLevelFile("core.lvl");
         gameData->ReadLevelFile("common.lvl");
         gameData->set_owner(this);
+
+        GameScripts *gameScripts = memnew(GameScripts);
+        add_child(gameScripts);
+        gameScripts->set_owner(this);
 
         godot::UtilityFunctions::print("hello world!");
     }

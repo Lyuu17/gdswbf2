@@ -23,8 +23,6 @@ namespace SWBF2
         godot::String m_curMapName;
 
     public: // variables
-        lua_State *m_luaState;
-
         Gamemode m_curGamemode;
 
     public: // methods

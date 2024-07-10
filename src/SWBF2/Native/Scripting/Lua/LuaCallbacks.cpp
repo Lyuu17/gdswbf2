@@ -2,6 +2,7 @@
 #include <lauxlib.h>
 
 #include "Core.hpp"
+#include "GameScripts.hpp"
 
 #include "Native/Scripting/Lua/LuaCallbacks.hpp"
 #include "Native/Scripting/Lua/ScriptCB.hpp"
@@ -594,15 +595,7 @@ namespace SWBF2::Native::Scripting::Lua
     {
         for (const auto &cb : cbs)
         {
-            RegisterCallback(cb.name, cb.func);
+            GameScripts::Instance()->RegisterCallback(cb.name, cb.func);
         }
-    }
-
-    void LuaCallbacks::RegisterCallback(const char *name, lua_CFunction func)
-    {
-        lua_pushcfunction(Core::Instance()->m_luaState, func);
-        lua_pushstring(Core::Instance()->m_luaState, name);
-        lua_insert(Core::Instance()->m_luaState, -2);
-        lua_settable(Core::Instance()->m_luaState, -10001);
     }
 }
