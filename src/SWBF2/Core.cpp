@@ -16,6 +16,8 @@ namespace SWBF2
 
     Core::Core()
         : m_curGamemode(Gamemode::NONE)
+        , m_language("english")
+        , m_platform("pc")
     {
         m_instance = this;
     }
@@ -71,6 +73,11 @@ namespace SWBF2
     {
         godot::ClassDB::bind_method(godot::D_METHOD("get_mapname"), &Core::GetMapName);
         godot::ClassDB::bind_method(godot::D_METHOD("load_level", "mapname"), &Core::LoadLevel);
+
+        godot::ClassDB::bind_method(godot::D_METHOD("get_language"), &Core::GetLanguage);
+        godot::ClassDB::bind_method(godot::D_METHOD("set_language", "language"), &Core::SetLanguage);
+
+        godot::ClassDB::bind_method(godot::D_METHOD("get_platform"), &Core::GetPlatform);
 
         std::string mapList;
         for (const auto &[mapId, mapPath] : DefaultGameMaps)

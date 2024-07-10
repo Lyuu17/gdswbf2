@@ -1,6 +1,8 @@
 
 #include <lua.h>
 
+#include "Core.hpp"
+
 #include "LuaCallbacks.hpp"
 #include "ScriptCB.hpp"
 
@@ -13,14 +15,14 @@ namespace SWBF2::Native::Scripting::Lua
 
     int ScriptCB_GetPlatform(lua_State *L)
     {
-        lua_pushstring(L, "pc");
+        lua_pushstring(L, Core::Instance()->GetPlatform().ascii().get_data());
 
         return 1;
     }
 
     int ScriptCB_GetLanguage(lua_State *L)
     {
-        lua_pushstring(L, "english");
+        lua_pushstring(L, Core::Instance()->GetLanguage().ascii().get_data());
 
         return 1;
     }
