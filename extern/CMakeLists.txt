@@ -14,5 +14,6 @@ add_subdirectory(lua)
 
 target_compile_definitions(lua
     PUBLIC
+        TRUST_BINARIES
         LUA_NUMBER=float
 )
