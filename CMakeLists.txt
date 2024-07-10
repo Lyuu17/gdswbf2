@@ -35,7 +35,12 @@ add_library( ${PROJECT_NAME} SHARED )
 
 # LIB_ARCH is the architecture being built. It is set to the build system's architecture.
 # For macOS, we build a universal library (both arm64 and x86_64).
-set( LIB_ARCH ${CMAKE_SYSTEM_PROCESSOR} )
+# set( LIB_ARCH ${CMAKE_SYSTEM_PROCESSOR} )
+if("${CMAKE_SIZEOF_VOID_P}" EQUAL "8")
+    set(LIB_ARCH "x86_64")
+else()
+    set(LIB_ARCH "x86")
+endif()
 if ( APPLE )
     set( LIB_ARCH "universal" )
 endif()

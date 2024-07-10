@@ -11,3 +11,8 @@ set_target_properties(godot-cpp
 
 # lua
 add_subdirectory(lua)
+
+target_compile_definitions(lua
+    PUBLIC
+        LUA_NUMBER=float
+)

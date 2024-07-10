@@ -20,7 +20,7 @@ namespace SWBF2::Native
             return false;
         }
 
-        auto size = is.tellg();
+        std::size_t size = (std::size_t)is.tellg();
         std::vector<std::byte> bytes;
         bytes.resize(size);
 
